@@ -225,7 +225,7 @@ public class Restaurant {
             gson.toJson(allRestaurant, fileWriterRestaurant);
             fileWriterRestaurant.close();
         } catch (IOException e) {
-            System.out.println("problem in writing");
+            System.out.println(" ");
         }
     }
     public ArrayList<Food> getFoodsWithFoodTypeInt(int foodTypeInt){
@@ -267,7 +267,7 @@ public class Restaurant {
                 allRestaurant.addAll(allR);
             ID_Counter = allRestaurant.size();
         } catch (IOException e) {
-            System.out.println("problem in reading");
+            System.out.println(" ");
         }
         return allRestaurant;
     }
