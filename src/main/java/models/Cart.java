@@ -64,7 +64,7 @@ public class Cart {
 
     public static void saveCartToFile() {
         try {
-            FileWriter fileWriterCart = new FileWriter("oop\\files\\carts.json");
+            FileWriter fileWriterCart = new FileWriter("src\\\\main\\\\oop\\files\\carts.json");
             Gson gson = new Gson();
             gson.toJson(allPersonCart, fileWriterCart);
             fileWriterCart.close();
@@ -76,7 +76,7 @@ public class Cart {
     public static ArrayList<Cart> loadCartFromFile() {
         try {
             FileReader fileReaderCart = null;
-            fileReaderCart = new FileReader("oop\\files\\carts.json");
+            fileReaderCart = new FileReader("src\\\\main\\\\oop\\files\\carts.json");
             Type type = new TypeToken<ArrayList<Cart>>() {
             }.getType();
             Gson gson = new Gson();

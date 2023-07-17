@@ -145,7 +145,7 @@ public class Order {
 
     public static void saveOrderToFile() {
         try {
-            FileWriter fileWriterOrder = new FileWriter("java\\files\\orders.json");
+            FileWriter fileWriterOrder = new FileWriter("src\\\\main\\\\java\\files\\orders.json");
             Gson gson = new Gson();
             gson.toJson(allOrders, fileWriterOrder);
             fileWriterOrder.close();
@@ -157,7 +157,7 @@ public class Order {
     public static ArrayList<Order> loadOrderFromFile() {
         try {
             FileReader fileReaderOrder = null;
-            fileReaderOrder = new FileReader("java\\files\\orders.json");
+            fileReaderOrder = new FileReader("src\\\\main\\\\java\\files\\orders.json");
             Type type = new TypeToken<ArrayList<Order>>() {
             }.getType();
             Gson gson = new Gson();

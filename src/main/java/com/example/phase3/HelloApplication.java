@@ -3778,23 +3778,23 @@ public class HelloApplication {
     public static void main(String[] args) {
 
         showLoginRegisterUI();
-        new File("java\\\\files\\\\vendors.json");
-        new File("java\\\\files\\\\customers.json");
-        new File("java\\\\files\\\\restaurants.json");
+        new File("src\\\\main\\\\java\\\\files\\\\vendors.json");
+        new File("src\\\\main\\\\java\\\\files\\\\customers.json");
+        new File("src\\\\main\\\\java\\\\files\\\\restaurants.json");
 //        new File("oop\\\\files\\\\ratingForRestaurant.json");
 //        new File("oop\\\\files\\\\commentForRestaurant.json");
 //        new File("oop\\\\files\\\\restaurantFoods.json");
 //        new File("oop\\\\files\\\\restaurantFoodTypes.json");
-        new File("java\\\\files\\\\foods.json");
+        new File("src\\\\main\\\\java\\\\files\\\\foods.json");
 //        new File("oop\\\\files\\\\ratingForFood.json");
 //        new File("oop\\\\files\\\\commentForFood.json");
-        new File("java\\\\files\\\\orders.json");
+        new File("src\\\\main\\\\java\\\\files\\\\orders.json");
 //        new File("oop\\\\files\\\\orderFoods.json");
 //        new File("oop\\\\files\\\\chosenFoods.json");
-        new File("java\\\\files\\\\carts.json");
-        new File("java\\\\files\\\\foodComment.json");
-        new File("java\\\\files\\\\restaurantComments.json");
-        new File("java\\\\files\\\\foodRatings.json");
-        new File("java\\\\files\\\\restaurantRatings.json");
+        new File("src\\\\main\\\\java\\\\files\\\\carts.json");
+        new File("src\\\\main\\\\java\\\\files\\\\foodComment.json");
+        new File("src\\\\main\\\\java\\\\files\\\\restaurantComments.json");
+        new File("src\\\\main\\\\java\\\\files\\\\foodRatings.json");
+        new File("src\\\\main\\\\java\\\\files\\\\restaurantRatings.json");
     }
 }

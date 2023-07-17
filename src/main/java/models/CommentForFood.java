@@ -85,7 +85,7 @@ public class CommentForFood {
     }
     public static void saveFoodCommentToFile(){
         try {
-            FileWriter fileWriterFoodComment = new FileWriter("java\\files\\foodComment.json");
+            FileWriter fileWriterFoodComment = new FileWriter("src\\\\main\\\\java\\files\\foodComment.json");
             Gson gson = new Gson();
             gson.toJson(allComments, fileWriterFoodComment);
             fileWriterFoodComment.close();
@@ -96,7 +96,7 @@ public class CommentForFood {
     public static ArrayList<CommentForFood> loadFoodCommentFromFile(){
         try {
             FileReader fileReaderFoodComment = null;
-            fileReaderFoodComment = new FileReader("java\\files\\foodComment.json");
+            fileReaderFoodComment = new FileReader("src\\\\main\\\\java\\files\\foodComment.json");
             Type type = new TypeToken<ArrayList<CommentForFood>>(){}.getType();
             Gson gson = new Gson();
             ArrayList<CommentForFood> allC = new ArrayList<>();
