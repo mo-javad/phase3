@@ -1629,8 +1629,6 @@ public class HelloApplication {
     }
     public static void showDisplayRatingsForVendorUI(){
 //        JButton backButton = new JButton("Back");
-//
-
 //        JFrame frame = new JFrame("Rating System");
 //        frame.setSize(250, 150);
 //        frame.setResizable(false);
