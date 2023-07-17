@@ -90,7 +90,7 @@ public class CommentForFood {
             gson.toJson(allComments, fileWriterFoodComment);
             fileWriterFoodComment.close();
         } catch (IOException e) {
-            System.out.println("problem in writing");
+            System.out.println(" ");
         }
     }
     public static ArrayList<CommentForFood> loadFoodCommentFromFile(){
@@ -107,7 +107,7 @@ public class CommentForFood {
                 allComments.addAll(allC);
             counterID = allComments.size();
         } catch (IOException e) {
-            System.out.println("problem in reading");
+            System.out.println(" ");
         }
         return allComments;
     }
