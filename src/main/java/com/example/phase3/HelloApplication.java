@@ -1,4 +1,5 @@
 package com.example.phase3;
+import controllers.MainController;
 import enums.FoodType;
 import enums.Message;
 import models.*;
@@ -665,14 +666,14 @@ public class HelloApplication {
             else {
                 frame.setVisible(false);
                 String name = nameField.getText();
-                showAddRestaurantPage2UI();
+                showAddRestaurantPage2UI(name);
             }
         });
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    public static void showAddRestaurantPage2UI() {
+    public static void showAddRestaurantPage2UI(String name) {
         JButton backButton = new JButton("Back");
         JButton nextButton = new JButton("Next");
         JLabel titleLabel = new JLabel("New Restaurant");
@@ -717,6 +718,7 @@ public class HelloApplication {
             else {
                 frame.setVisible(false);
                 int node = Integer.parseInt(locationField.getText());
+                Message message = MainController.getInstance().handleAddRestaurant(name, node);
                 showAddRestaurantPage3UI();
             }
         });
@@ -790,26 +792,31 @@ public class HelloApplication {
 
         fastFoodButton.addActionListener(e -> {
             frame.setVisible(false);
+            MainMenu.setCurrentFoodType(FoodType.FASTFOOD);
             showAddRestaurantPage5UI();
         });
 
         iranianFoodButton.addActionListener(e -> {
             frame.setVisible(false);
+            MainMenu.setCurrentFoodType(FoodType.IRANIANFOOD);
             showAddRestaurantPage5UI();
         });
 
         seaFoodButton.addActionListener(e -> {
             frame.setVisible(false);
+            MainMenu.setCurrentFoodType(FoodType.SEAFOOD);
             showAddRestaurantPage5UI();
         });
 
         appetizerButton.addActionListener(e -> {
             frame.setVisible(false);
+            MainMenu.setCurrentFoodType(FoodType.APPETIZER);
             showAddRestaurantPage5UI();
         });
 
         otherButton.addActionListener(e -> {
             frame.setVisible(false);
+            MainMenu.setCurrentFoodType(FoodType.OTHER);
             showAddRestaurantPage5UI();
         });
 
@@ -869,6 +876,7 @@ public class HelloApplication {
                 frame.setVisible(false);
                 String name = nameField.getText();
                 int price = Integer.parseInt(priceField.getText());
+                Message message = MainController.getInstance().handleAddFood(name, price, FoodType.getIntFromFoodType(MainMenu.getCurrentFoodType()));
                 showAddRestaurantPage3UI();
             }
         });
@@ -876,7 +884,7 @@ public class HelloApplication {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    public static void  showRestaurantOptions(){
+    public static void showRestaurantOptions(){
         JLabel titleLabel = new JLabel("Choose one of the options :");
         JButton backButton = new JButton("Back");
         JButton showLocationButton = new JButton("location");
@@ -1153,7 +1161,7 @@ public class HelloApplication {
 
 
             frame.setVisible(false);
-            
+
         });
 
 
@@ -1473,9 +1481,13 @@ public class HelloApplication {
         frame.setSize(250, 150);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        String[] items = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
-        JList<String> list = new JList<>(items);
+        ArrayList<String> orderHistory = new ArrayList<>();
+        Order currentOrder = new Order();
+        for(int i=0 ; i<currentOrder.pastOrders().size() ; i++)
+            orderHistory.add(" customer Name : " + Customer.getUserByUserID(currentOrder.pastOrders().get(i).getCustomerID()).getUsername() +
+                    " | Order Date : "+ currentOrder.pastOrders().get(i).getStartTime().plusSeconds(currentOrder.pastOrders().get(i).getEstimatedTime()).toLocalDate());
+        String[] array = orderHistory.toArray(new String[orderHistory.size()]);
+        JList<String> list = new JList<>(array);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         list.addListSelectionListener(event -> {
@@ -1506,12 +1518,14 @@ public class HelloApplication {
         JButton responseButton = new JButton("Response");
 
         JFrame frame = new JFrame("Comment System");
-        frame.setSize(250, 150);
-        frame.setResizable(false);
+        frame.setSize(500, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        String[] items = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
-        JList<String> list = new JList<>(items);
+        ArrayList<String> comments = new ArrayList<>();
+        for(int i=0 ; i<MainMenu.getCurrentRestaurant().getAllComments().size() ; i++)
+            comments.add(Customer.getUserByUserID(MainMenu.getCurrentRestaurant().getAllComments().get(i).getCustomerID()).getUsername() + " : "
+                    + MainMenu.getCurrentRestaurant().getAllComments().get(i).getComment());
+        String[] array = comments.toArray(new String[comments.size()]);
+        JList<String> list = new JList<>(array);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         list.addListSelectionListener(event -> {
@@ -1602,6 +1616,7 @@ public class HelloApplication {
 
             okButton.addActionListener(e -> {
                 frame1.setVisible(false);
+                frame.setVisible(false);
                 showDisplayCommentsForVendorUI();
             });
             frame.setVisible(false);
@@ -1613,42 +1628,73 @@ public class HelloApplication {
         frame.setVisible(true);
     }
     public static void showDisplayRatingsForVendorUI(){
+//        JButton backButton = new JButton("Back");
+//        JFrame frame = new JFrame("Rating System");
+//        frame.setSize(250, 150);
+//        frame.setResizable(false);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//
+//        String[] items = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
+//        JList<String> list = new JList<>(items);
+//        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//
+//        JScrollPane scrollPane = new JScrollPane(list);
+//        frame.add(scrollPane, BorderLayout.CENTER);
+//
+//        JPanel bottomPanel = new JPanel();
+//        bottomPanel.add(backButton);
+//        frame.add(bottomPanel, BorderLayout.SOUTH);
+//
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
+//
+//        backButton.addActionListener(e1 -> {
+//            frame.setVisible(false);
+//            showRestaurantOptions();
+//        });
+        int finalRate = MainMenu.getCurrentRestaurant().getFinalRate();
+
+        JLabel showRateLabel = new JLabel("The Restaurant Rate : "+ finalRate );
+        showRateLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        showRateLabel.setForeground(Color.BLUE);
         JButton backButton = new JButton("Back");
 
-        JFrame frame = new JFrame("Rating System");
+        JFrame frame = new JFrame("Restaurant Rate System");
         frame.setSize(250, 150);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
 
-        String[] items = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
-        JList<String> list = new JList<>(items);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JPanel centerPanel = new JPanel();
+        centerPanel.add(showRateLabel);
+        frame.add(centerPanel, BorderLayout.CENTER);
 
-        JScrollPane scrollPane = new JScrollPane(list);
-        frame.add(scrollPane, BorderLayout.CENTER);
-
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.add(backButton);
-        frame.add(bottomPanel, BorderLayout.SOUTH);
-
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        JPanel bottomPanel1 = new JPanel();
+        bottomPanel1.add(backButton);
+        frame.add(bottomPanel1, BorderLayout.SOUTH);
 
         backButton.addActionListener(e1 -> {
             frame.setVisible(false);
             showRestaurantOptions();
         });
+
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
     public static void showEditFoodTypeUI(){
-        JButton backButton = new JButton("Back");   
+        JButton backButton = new JButton("Back");
 
         JFrame frame = new JFrame("Food Type System");
         frame.setSize(250, 150);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        String[] items = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
-        JList<String> list = new JList<>(items);
+        ArrayList<String> foodTypesName = new ArrayList<>();
+        for(int i=0 ; i<MainMenu.getCurrentRestaurant().getFoodTypes().size() ; i++)
+            foodTypesName.add(FoodType.getFoodTypeNameWithFromInt(MainMenu.getCurrentRestaurant().getFoodTypes().get(i)));
+
+        String[] array = foodTypesName.toArray(new String[foodTypesName.size()]);
+        JList<String> list = new JList<>(array);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.addListSelectionListener(event -> {
             // Get the selected index and value
@@ -1780,7 +1826,7 @@ public class HelloApplication {
 
                 okButton.addActionListener(e -> {
                     frame1.setVisible(false);
-                    showEditLocationForVendorUI();
+                    showRestaurantOptions();
                 });
                 frame.setVisible(false);
                 frame1.setLocationRelativeTo(null);

@@ -197,7 +197,7 @@ public class Restaurant {
         if (loadRestaurantFromFile() != null)
             allRestaurant = new ArrayList<>(loadRestaurantFromFile());
         finalRate = 0;
-        if (allRatings == null)
+        if (allRatings.size() == 0)
             return -1;
         for (RatingForRestaurant rating : allRatings) finalRate += rating.getRate();
         return finalRate / allRatings.size();
