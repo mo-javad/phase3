@@ -220,7 +220,7 @@ public class Food {
 
     public static void saveFoodToFile() {
         try {
-            FileWriter fileWriterFood = new FileWriter("oop\\files\\foods.json");
+            FileWriter fileWriterFood = new FileWriter("java\\files\\foods.json");
             Gson gson = new Gson();
             gson.toJson(allFoods, fileWriterFood);
             fileWriterFood.close();
@@ -232,7 +232,7 @@ public class Food {
     public static ArrayList<Food> loadFoodFromFile() {
         try {
             FileReader fileReaderFood = null;
-            fileReaderFood = new FileReader("oop\\files\\foods.json");
+            fileReaderFood = new FileReader("java\\files\\foods.json");
             Type type = new TypeToken<ArrayList<Food>>() {
             }.getType();
             Gson gson = new Gson();

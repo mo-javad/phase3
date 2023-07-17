@@ -220,7 +220,7 @@ public class Restaurant {
 
     public static void saveRestaurantToFile() {
         try {
-            FileWriter fileWriterRestaurant = new FileWriter("oop\\files\\restaurants.json");
+            FileWriter fileWriterRestaurant = new FileWriter("java\\files\\restaurants.json");
             Gson gson = new Gson();
             gson.toJson(allRestaurant, fileWriterRestaurant);
             fileWriterRestaurant.close();
@@ -255,7 +255,7 @@ public class Restaurant {
     public static ArrayList<Restaurant> loadRestaurantFromFile() {
         try {
             FileReader fileReaderRestaurant = null;
-            fileReaderRestaurant = new FileReader("oop\\files\\restaurants.json");
+            fileReaderRestaurant = new FileReader("java\\files\\restaurants.json");
             Type type = new TypeToken<ArrayList<Restaurant>>() {
             }.getType();
             Gson gson = new Gson();
