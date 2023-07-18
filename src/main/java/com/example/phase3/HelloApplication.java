@@ -2074,15 +2074,6 @@ public class HelloApplication {
             foodName.add("Food name : "+currentOrder.openOrders().get(num).getOrderedFoods().get(i).getName() + " | Food price : " + currentOrder.openOrders().get(num).getOrderedFoods().get(i).getPrice());
         String[] array = foodName.toArray(new String[foodName.size()]);
         JList<String> list = new JList<>(array);
-//        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//
-//        list.addListSelectionListener(event -> {
-//            // Get the selected index and value
-//            int selectedIndex = list.getSelectedIndex();
-//            String selectedValue = list.getSelectedValue();
-//
-//        });
-
 
         JScrollPane scrollPane = new JScrollPane(list);
         frame.add(scrollPane, BorderLayout.CENTER);
@@ -2748,12 +2739,12 @@ public class HelloApplication {
             showOurOfferUI();
         });
 
+
+
         searchRestaurantButton.addActionListener(e -> {
             String searched = searchRestaurantField.getText();
-            MainMenu mainMenu = MainMenu.getInstance();
 
-            ArrayList<String> restaurants;
-            restaurants = mainMenu.searchRestaurant(searched);
+            ArrayList<String> restaurants = MainMenu.searchRestaurant(searched);
 
             String[] array = restaurants.toArray(new String[restaurants.size()]);
 
@@ -3371,10 +3362,9 @@ public class HelloApplication {
 
         searchFoodButton.addActionListener(e -> {
             String searched = searchFoodField.getText();
-            MainMenu mainMenu = MainMenu.getInstance();
 
             ArrayList<String> foods;
-            foods = mainMenu.searchFoodForCustomer(searched);
+            foods = MainMenu.searchFoodForCustomer(searched);
 
             String[] array1 = foods.toArray(new String[foods.size()]);
 

@@ -33,7 +33,7 @@ public class MainController extends Controller{
     public ArrayList<Food> handleShowFoods() {
         return MainMenu.getCurrentRestaurant().getFoods();
     }
-    public ArrayList<Restaurant> handleSearchRestaurants(String choice) {
+    public static ArrayList<Restaurant> handleSearchRestaurants(String choice) {
         ArrayList <Restaurant> searchedRestaurants = new ArrayList<>();
         for(int i=0 ; i<Restaurant.getAllRestaurant().size() ; i++)
             if(Restaurant.getAllRestaurant().get(i).getName().contains(choice))
@@ -41,7 +41,7 @@ public class MainController extends Controller{
         return searchedRestaurants;
     }
 
-    public ArrayList<Food> handleSearchFoods(String choice) {
+    public static ArrayList<Food> handleSearchFoods(String choice) {
         ArrayList <Food> searchedFoods = new ArrayList<>();
         for(int i=0 ; i<MainMenu.getCurrentRestaurant().getFoods().size() ; i++)
             if(MainMenu.getCurrentRestaurant().getFoods().get(i).getName().contains(choice))

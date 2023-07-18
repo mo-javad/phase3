@@ -704,21 +704,21 @@ public class MainMenu extends Menu{
     public static void handleAddFoodToCart(){
         currentCart.addFood(currentFood);
     }
-    public ArrayList<String> searchFoodForCustomer(String searched){
+    public static ArrayList<String> searchFoodForCustomer(String searched){
         ArrayList<String> foods = new ArrayList<>();
 
         String choice = searched ;
-        ArrayList<Food> allSearchedFoods = this.controller.handleSearchFoods(choice);
+        ArrayList<Food> allSearchedFoods = MainController.handleSearchFoods(choice);
         for (Food allSearchedFood : allSearchedFoods)
-            foods.add(String.valueOf(allSearchedFood.getID()));
+            foods.add(allSearchedFood.getName());
 
         return foods;
     }
-    public ArrayList<String> searchRestaurant(String searched) {
+    public static ArrayList<String> searchRestaurant(String searched) {
         ArrayList<String> restaurants = new ArrayList<>();
 
         String choice = searched ;
-        ArrayList<Restaurant> allSearchedRestaurants = this.controller.handleSearchRestaurants(choice);
+        ArrayList<Restaurant> allSearchedRestaurants = MainController.handleSearchRestaurants(choice);
         for (Restaurant allSearchedRestaurant : allSearchedRestaurants)
             restaurants.add(allSearchedRestaurant.getName());
 
@@ -777,11 +777,11 @@ public class MainMenu extends Menu{
         for (int i=0 ; i< orders.size() ; i++)
             for (int j=0 ; j<orders.get(i).getOrderedFoods().size() ; j++)
                 switch (orders.get(i).getOrderedFoods().get(j).getFoodTypeID()) {
-                    case 1 -> fastFood++;
-                    case 2 -> iranianFood++;
-                    case 3 -> seaFood++;
-                    case 4 -> appetizer++;
-                    case 5 -> other++;
+                    case 0 -> fastFood++;
+                    case 1 -> iranianFood++;
+                    case 2 -> seaFood++;
+                    case 3 -> appetizer++;
+                    case 4 -> other++;
                     default -> {
                     }
                 }
