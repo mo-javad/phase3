@@ -45,6 +45,14 @@ public class Food {
         allComments = CommentForFood.getAllCommentsByFID(getID());
         return allComments;
     }
+    public static ArrayList<Food> foodsSort(int ID){
+        ArrayList<Food> foods = new ArrayList<>();
+        for(int i = 0 ; i< allFoods.size() ; i++)
+            if(allFoods.get(i).getID_restaurant() == ID)
+                foods.add(allFoods.get(i));
+
+        return foods;
+    }
     public static ArrayList<Food> getAllRestaurantFoods(int restaurantID) {
         if (loadFoodFromFile().size() != 0)
             allFoods = new ArrayList<>(loadFoodFromFile());

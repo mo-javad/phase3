@@ -3324,6 +3324,8 @@ public class HelloApplication {
         int size = MainMenu.getCurrentRestaurant().
                 getFoodsWithFoodTypeInt(FoodType.getIntFromFoodType(MainMenu.getCurrentFoodType())).size();
 
+
+
         for(int i=0 ; i<size ; i++)
             foodsName.add(MainMenu.getCurrentRestaurant()
                     .getFoodsWithFoodTypeInt(FoodType.getIntFromFoodType(MainMenu.getCurrentFoodType())).get(i).getName());
@@ -4104,7 +4106,7 @@ public class HelloApplication {
         topPanel.add(titleLabel);
         frame.add(topPanel, BorderLayout.NORTH);
 
-        JPanel centerPanel = new JPanel(new GridLayout(10 , 2));
+        JPanel centerPanel = new JPanel(new GridLayout(7 , 2));
         centerPanel.add(IDCommentLabel);
         centerPanel.add(IDCommentField);
         centerPanel.add(editCommentLabel);
@@ -4193,7 +4195,7 @@ public class HelloApplication {
         topPanel.add(titleLabel);
         frame.add(topPanel, BorderLayout.NORTH);
 
-        JPanel centerPanel = new JPanel(new GridLayout(10 , 2));
+        JPanel centerPanel = new JPanel(new GridLayout(6 , 2));
         centerPanel.add(addCommentLabel);
         centerPanel.add(addCommentField);
         centerPanel.add(errorLabel);

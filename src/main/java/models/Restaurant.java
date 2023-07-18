@@ -106,11 +106,8 @@ public class Restaurant {
     }
 
     public ArrayList<Food> getFoods() {
-        if (loadRestaurantFromFile() != null)
-            allRestaurant = new ArrayList<>(loadRestaurantFromFile());
-//        if (foods.size() == 0)
-//            foods = new ArrayList<>();
-//        foods.addAll(Food.getAllRestaurantFoods(getRestaurantID()));
+        foods = Food.foodsSort(this.RestaurantID);
+
         return Food.getAllRestaurantFoods(getRestaurantID());
     }
 
@@ -274,6 +271,7 @@ public class Restaurant {
             allR = gson.fromJson(fileReaderRestaurant, type);
             fileReaderRestaurant.close();
             allRestaurant = new ArrayList<>();
+
             if (allR != null)
                 allRestaurant.addAll(allR);
             ID_Counter = allRestaurant.size();
