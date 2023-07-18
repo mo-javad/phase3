@@ -89,13 +89,6 @@ public class MainMenu extends Menu{
     private void handleCustomerChoice(String choice) throws IOException {
         switch (choice) {
             case "1" -> this.showRestaurantsForCustomer();
-          //  case "2" -> this.searchRestaurant();
-         //   case "3" -> this.handleAccessOrderHistoryForCustomer();
-            //   case "4" -> this.handleDisplayCartStatusForCustomer();
-         //   case "5" -> this.handleConfirmOrderForCustomer();
-         //   case "6" -> this.handleChargeAccountForCustomer();
-         //   case "7" -> this.handleDisplayAccountChargeForCustomer();
-         //   case "8" -> this.handleShowEstimatedDeliveryTime();
             case "9" -> RegisterMenu.getInstance().run();
             default -> System.out.println(Message.INVALID_CHOICE);
         }
@@ -615,13 +608,6 @@ public class MainMenu extends Menu{
     private void handleCustomerChoiceRestaurantOption(String choice) {
         switch (choice.trim()) {
             case "1" -> this.showAllFoodForCustomer();
-           // case "2" -> this.searchFoodForCustomer();
-           // case "3" -> this.handleDisplayRestaurantComment();
-           // case "4" -> this.handleAddNewCommentForRestaurant();
-           // case "5" -> this.handleEditRestaurantCommentForCustomer();
-           // case "6" -> this.handleDisplayRatingForCustomer();
-           // case "7" -> this.handleSubmitRatingForCustomer();
-           // case "8" -> this.handleEditRestaurantRatingForCustomer();
             case "9" -> this.showRestaurantsForCustomer();
             default -> System.out.println(Message.INVALID_CHOICE);
         }
@@ -665,12 +651,6 @@ public class MainMenu extends Menu{
 
     private void handleCustomerChoiceFoodOption(String choice) {
         switch (choice.trim()) {
-           // case "1" -> this.handleDisplayCommentsOfFoodForCustomer();
-           // case "2" -> this.handleAddNewCommentForFoodForCustomer();
-            //case "3" -> this.handleEditCommentsOfFoodForCustomer();
-           // case "4" -> this.handleDisplayRatingOfFoodForCustomer();
-           // case "5" -> this.handleSubmitRatingForFoodForCustomer();
-            //case "6" -> this.handleEditRatingForFoodForCustomer();
             case "7" -> this.handleAddFoodToCart();
             case "8" -> this.showAllFoodForCustomer();
             default -> System.out.println(Message.INVALID_CHOICE);
@@ -729,19 +709,6 @@ public class MainMenu extends Menu{
 
         return foods;
     }
-
-//    private void chooseSearchedFoodForCustomer(){
-//        String choice = this.getChoice();
-//        if(choice.equals("0"))
-//            this.searchFoodForCustomer();
-//
-//        else {
-//            setCurrentFood(controller.handleChooseFood(choice));
-//            this.handleShowFoodOptionForCustomer();
-//        }
-//    }
-
-
     public ArrayList<String> searchRestaurant(String searched) {
         ArrayList<String> restaurants = new ArrayList<>();
 
@@ -862,6 +829,30 @@ public class MainMenu extends Menu{
             return null;
         }else {
             return currentOrder.getStartTime().plusSeconds(currentOrder.getEstimatedTime());
+        }
+    }
+    public String handleShowPathDelivery(){
+        if(!haveDelivery() && isDelivery){
+            isDelivery = false;
+            period = 0;
+            startTime = null;
+        }
+        if(!this.haveDelivery()) {
+            return null;
+        }else {
+            return currentDelivery.getShortestPath();
+        }
+    }
+    public int handleShowWhereISDelivery(){
+        if(!haveDelivery() && isDelivery){
+            isDelivery = false;
+            period = 0;
+            startTime = null;
+        }
+        if(!this.haveDelivery()) {
+            return 0;
+        }else {
+            return currentDelivery.whereIsNowDelivery(startTime , LocalDateTime.now() , period);
         }
     }
     public void timer (int timePeriod){
