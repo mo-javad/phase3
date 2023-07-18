@@ -35,15 +35,26 @@ public class Food {
     public ArrayList<RatingForFood> getRatings() {
         if (loadFoodFromFile() != null)
             allFoods = new ArrayList<>(loadFoodFromFile());
+        allRatings = RatingForFood.getAllRatingsByFID(ID);
         return allRatings;
     }
 
     public ArrayList<CommentForFood> getComments() {
         if (loadFoodFromFile() != null)
             allFoods = new ArrayList<>(loadFoodFromFile());
+        allComments = CommentForFood.getAllCommentsByFID(getID());
         return allComments;
     }
-
+    public static ArrayList<Food> getAllRestaurantFoods(int restaurantID) {
+        if (loadFoodFromFile().size() != 0)
+            allFoods = new ArrayList<>(loadFoodFromFile());
+        ArrayList<Food> foods = new ArrayList<>();
+        for (Food allFood : allFoods) {
+            if (allFood.getID_restaurant() == restaurantID)
+                foods.add(allFood);
+        }
+        return foods;
+    }
     public static int getIDCounter() {
         return IDCounter;
     }
@@ -145,11 +156,11 @@ public class Food {
         if (loadFoodFromFile() != null)
             allFoods = new ArrayList<>(loadFoodFromFile());
         finalRate = 0;
-        if (allRatings == null)
+        if (getRatings() == null)
             return -1;
         else {
-            for (RatingForFood rating : allRatings) finalRate += rating.getRate();
-            return finalRate / allRatings.size();
+            for (RatingForFood rating : getRatings()) finalRate += rating.getRate();
+            return finalRate / getRatings().size();
         }
     }
 

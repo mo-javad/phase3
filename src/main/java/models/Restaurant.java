@@ -82,6 +82,12 @@ public class Restaurant {
     public ArrayList<Integer> getFoodTypes() {
         if (loadRestaurantFromFile() != null)
             allRestaurant = new ArrayList<>(loadRestaurantFromFile());
+        if (foodTypes.size() ==0)
+            foodTypes = new ArrayList<>();
+        for (int i=0; i<getFoods().size(); i++){
+            if (!foodTypes.contains(getFoods().get(i).foodTypeID))
+                foodTypes.add(getFoods().get(i).foodTypeID);
+        }
         return foodTypes;
     }
 
@@ -102,18 +108,23 @@ public class Restaurant {
     public ArrayList<Food> getFoods() {
         if (loadRestaurantFromFile() != null)
             allRestaurant = new ArrayList<>(loadRestaurantFromFile());
-        return foods;
+//        if (foods.size() == 0)
+//            foods = new ArrayList<>();
+//        foods.addAll(Food.getAllRestaurantFoods(getRestaurantID()));
+        return Food.getAllRestaurantFoods(getRestaurantID());
     }
 
     public ArrayList<RatingForRestaurant> getAllRatings() {
         if (loadRestaurantFromFile() != null)
             allRestaurant = new ArrayList<>(loadRestaurantFromFile());
+        allRatings = RatingForRestaurant.getAllRatingsByRID(getRestaurantID());
         return allRatings;
     }
 
     public ArrayList<CommentForRestaurant> getAllComments() {
         if (loadRestaurantFromFile() != null)
             allRestaurant = new ArrayList<>(loadRestaurantFromFile());
+        allComments = CommentForRestaurant.getAllCommentsByRID(getRestaurantID());
         return allComments;
     }
 

@@ -41,6 +41,17 @@ public class RatingForRestaurant {
         this.rateID = ++counterID;
         addRating(this);
     }
+    public static ArrayList<RatingForRestaurant> getAllRatingsByRID(int restaurantID) {
+        ArrayList<RatingForRestaurant> allRatingsR = new ArrayList<>();
+        if (loadRestaurantRatingFromFile() != null)
+            allRatings = new ArrayList<>(loadRestaurantRatingFromFile());
+
+        for (RatingForRestaurant allRating : allRatings) {
+            if (allRating.getRestaurantID() == restaurantID)
+                allRatingsR.add(allRating);
+        }
+        return allRatingsR;
+    }
     public static RatingForRestaurant getRatingByRestaurantIDAndCostumerID(int restaurantID, int costumer_ID) {
         if (loadRestaurantRatingFromFile() != null)
             allRatings = new ArrayList<>(loadRestaurantRatingFromFile());

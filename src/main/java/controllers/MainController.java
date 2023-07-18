@@ -71,9 +71,9 @@ public class MainController extends Controller{
         return Message.SUCCESS;
     }
     public Message handleAddFood(String name, int price, int foodType) {
-        Restaurant currentRestaurant = MainMenu.getCurrentRestaurant();
-        Food food = new Food(name, price, currentRestaurant.getRestaurantID(), foodType);
-        MainMenu.setCurrentFood(food);
+        Food newFood = new Food(name, price, MainMenu.getCurrentRestaurant().getRestaurantID(), foodType);
+        MainMenu.setCurrentFood(newFood);
+        MainMenu.getCurrentRestaurant().setFoods(newFood);
         return Message.SUCCESS;
     }
 

@@ -41,6 +41,17 @@ public class RatingForFood {
         this.rateID = ++counterID;
         addRating(this);
     }
+    public static ArrayList<RatingForFood> getAllRatingsByFID(int foodID) {
+        ArrayList<RatingForFood> allRatingsR = new ArrayList<>();
+        if (loadFoodRatingFromFile() != null)
+            allRatings = new ArrayList<>(loadFoodRatingFromFile());
+
+        for (RatingForFood allRating : allRatings) {
+            if (allRating.getFoodID() == foodID)
+                allRatingsR.add(allRating);
+        }
+        return allRatingsR;
+    }
     public static RatingForFood getRatingByFoodIDAndCostumerID(int foodID , int costumer_ID) {
         if (loadFoodRatingFromFile() != null)
             allRatings = new ArrayList<>(loadFoodRatingFromFile());

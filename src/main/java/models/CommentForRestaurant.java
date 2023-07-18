@@ -64,6 +64,19 @@ public class CommentForRestaurant {
         this.commentID = ++counterID;
         addComment(this);
     }
+
+    public static ArrayList<CommentForRestaurant> getAllCommentsByRID(int restaurantID) {
+        ArrayList<CommentForRestaurant> allCommentsR = new ArrayList<>();
+        if (loadRestaurantCommentFromFile() != null)
+            allComments = new ArrayList<>(loadRestaurantCommentFromFile());
+
+        for (CommentForRestaurant allComment : allComments) {
+            if (allComment.getRestaurantID() == restaurantID)
+                allCommentsR.add(allComment);
+        }
+        return allCommentsR;
+    }
+
     public static CommentForRestaurant getCommentByRestaurantIDAndCostumerID(int restaurantID, int costumer_ID) {
         if (loadRestaurantCommentFromFile() != null)
             allComments = new ArrayList<>(loadRestaurantCommentFromFile());

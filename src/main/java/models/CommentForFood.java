@@ -63,6 +63,17 @@ public class CommentForFood {
         this.commentID = ++counterID;
         addComment(this);
     }
+    public static ArrayList<CommentForFood> getAllCommentsByFID(int foodID) {
+        ArrayList<CommentForFood> allCommentsR = new ArrayList<>();
+        if (loadFoodCommentFromFile() != null)
+            allComments = new ArrayList<>(loadFoodCommentFromFile());
+
+        for (CommentForFood allComment : allComments) {
+            if (allComment.getFoodID() == foodID)
+                allCommentsR.add(allComment);
+        }
+        return allCommentsR;
+    }
     public static CommentForFood getCommentByFoodIDAndCostumerID(int foodID , int costumer_ID) {
         if (loadFoodCommentFromFile() != null)
             allComments = new ArrayList<>(loadFoodCommentFromFile());
