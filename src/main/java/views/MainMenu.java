@@ -760,6 +760,53 @@ public class MainMenu extends Menu{
         }
         return false;
     }
+    public static ArrayList<String> handleShowOffer(){
+        User loggedInUser = Menu.getLoggedInUser();
+        int fastFood = 0;
+        int iranianFood = 0;
+        int seaFood = 0 ;
+        int appetizer = 0 ;
+        int other = 0;
+
+        ArrayList<Order> orders = Order.getOrdersWithCustomerID(loggedInUser.getUserId());
+        for (int i=0 ; i< orders.size() ; i++)
+            for (int j=0 ; j<orders.get(i).getOrderedFoods().size() ; j++)
+                switch (orders.get(i).getOrderedFoods().get(j).getFoodTypeID()) {
+                    case 1 -> fastFood++;
+                    case 2 -> iranianFood++;
+                    case 3 -> seaFood++;
+                    case 4 -> appetizer++;
+                    case 5 -> other++;
+                    default -> {
+                    }
+                }
+
+        int foodType = fastFood;
+        if (iranianFood > foodType) {
+            foodType = iranianFood;
+        }
+        if (seaFood > foodType) {
+            foodType = seaFood;
+        }
+        if (appetizer > foodType) {
+            foodType = appetizer;
+        }
+        if (other > foodType) {
+            foodType = other;
+        }
+
+        ArrayList <String> foodsName = new ArrayList<>();
+        for(int i=0 ; i<Restaurant.getAllRestaurant().size() ; i++)
+
+            for (int j=0 ; j<Restaurant.getAllRestaurant().get(i).getFoods().size() ; j++)
+
+                if(Restaurant.getAllRestaurant().get(i).getFoods().get(j).getFoodTypeID() == foodType)
+
+                    foodsName.add(Restaurant.getAllRestaurant().get(i).getFoods().get(j).getName());
+
+        return foodsName;
+    }
+
 
     public static void handleDisplayRatingForCustomer(double rate){
        rate = currentRestaurant.getFinalRate();

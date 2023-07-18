@@ -136,6 +136,15 @@ public class Order {
         saveOrderToFile();
     }
 
+    public static ArrayList<Order> getOrdersWithCustomerID(int ID){
+        ArrayList<Order> orders = new ArrayList<>();
+        for(int i=0 ; i<allOrders.size() ; i++)
+            if(allOrders.get(i).customerID==ID)
+                orders.add(allOrders.get(i));
+
+        return orders;
+    }
+
     private void addOrder(Order order) {
         if (loadOrderFromFile() != null)
             allOrders = new ArrayList<>(loadOrderFromFile());
