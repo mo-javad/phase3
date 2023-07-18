@@ -720,7 +720,7 @@ public class MainMenu extends Menu{
         String choice = searched ;
         ArrayList<Restaurant> allSearchedRestaurants = this.controller.handleSearchRestaurants(choice);
         for (Restaurant allSearchedRestaurant : allSearchedRestaurants)
-            restaurants.add(String.valueOf(allSearchedRestaurant.getRestaurantID()));
+            restaurants.add(allSearchedRestaurant.getName());
 
         return restaurants;
     }

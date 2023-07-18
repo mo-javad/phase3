@@ -1017,9 +1017,6 @@ public class HelloApplication {
         bottomPanel.add(addFoodButton);
         frame.add(bottomPanel, BorderLayout.SOUTH);
 
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-
         backButton.addActionListener(e1 -> {
             frame.setVisible(false);
             showRestaurantOptions();
@@ -1029,6 +1026,9 @@ public class HelloApplication {
             frame.setVisible(false);
             showAddRestaurantPage3UI();
         });
+
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
     public static void showFoodDetailsForVendorUI(int num){
         String aux;
@@ -2074,14 +2074,14 @@ public class HelloApplication {
             foodName.add("Food name : "+currentOrder.openOrders().get(num).getOrderedFoods().get(i).getName() + " | Food price : " + currentOrder.openOrders().get(num).getOrderedFoods().get(i).getPrice());
         String[] array = foodName.toArray(new String[foodName.size()]);
         JList<String> list = new JList<>(array);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        list.addListSelectionListener(event -> {
-            // Get the selected index and value
-            int selectedIndex = list.getSelectedIndex();
-            String selectedValue = list.getSelectedValue();
-
-        });
+//        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//
+//        list.addListSelectionListener(event -> {
+//            // Get the selected index and value
+//            int selectedIndex = list.getSelectedIndex();
+//            String selectedValue = list.getSelectedValue();
+//
+//        });
 
 
         JScrollPane scrollPane = new JScrollPane(list);
@@ -2477,7 +2477,7 @@ public class HelloApplication {
         JList<String> list = new JList<>(array);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.addListSelectionListener(event -> {
-            // Get the selected index and value
+
             int selectedIndex = list.getSelectedIndex();
             String selectedValue = list.getSelectedValue();
             for (int i = 0; i < MainMenu.getCurrentRestaurant().getFoods().size(); i++) {
@@ -2485,7 +2485,7 @@ public class HelloApplication {
                     MainMenu.getCurrentRestaurant().getFoods().remove(i);
             }
             MainMenu.getCurrentRestaurant().getFoodTypes().remove(selectedIndex -1);
-            // TODO now with given Index we find the selected restaurant and show this window :
+
             frame.setVisible(false);
             showEditFoodType2UI();
         });
@@ -2497,13 +2497,13 @@ public class HelloApplication {
         bottomPanel.add(backButton);
         frame.add(bottomPanel, BorderLayout.SOUTH);
 
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-
         backButton.addActionListener(e1 -> {
             frame.setVisible(false);
             showRestaurantOptions();
         });
+
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
     public static void showEditFoodType2UI(){
         JButton noButton = new JButton("No");
@@ -2511,7 +2511,7 @@ public class HelloApplication {
         JLabel titleLabel = new JLabel("ARE YOU SURE YOU WANT TO CHANGE YOUR RESTAURANT TYPE??");
 
         JFrame frame = new JFrame("New Restaurant System");
-        frame.setSize(250, 150);
+        frame.setSize(500, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
@@ -2756,7 +2756,6 @@ public class HelloApplication {
             restaurants = mainMenu.searchRestaurant(searched);
 
             String[] array = restaurants.toArray(new String[restaurants.size()]);
-
 
             list.setListData(array);
 
