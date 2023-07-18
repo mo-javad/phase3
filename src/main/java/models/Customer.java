@@ -1,5 +1,6 @@
 package models;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class Customer extends User {
     private int charge ;

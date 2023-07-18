@@ -6,8 +6,6 @@ import models.*;
 import views.MainMenu;
 import views.Menu;
 import views.RegisterMenu;
-
-import javax.print.attribute.standard.OrientationRequested;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -2802,6 +2800,9 @@ public class HelloApplication {
         JLabel errorLabel = new JLabel("");
         String deliveryError = "you have no order";
         JLabel showtimeLabel = new JLabel("The estimated time : " +deliveryTime );
+        JLabel showPathLabel = new JLabel("The Delivery path : " );
+        JLabel showPathArrayLabel = new JLabel(mainMenu.handleShowPathDelivery());
+        JLabel whereIsNowDeliveryLabel = new JLabel("now delivery is in " + mainMenu.handleShowWhereISDelivery() + "st node" );
 
         JButton backButton = new JButton("Back");
 
@@ -2810,9 +2811,15 @@ public class HelloApplication {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        JPanel centerPanel = new JPanel(new GridLayout(2 , 1));
+        JPanel centerPanel = new JPanel(new GridLayout(5 , 1));
         centerPanel.add(showtimeLabel);
         showtimeLabel.setVisible(false);
+        centerPanel.add(showPathLabel);
+        showPathLabel.setVisible(false);
+        centerPanel.add(showPathArrayLabel);
+        showPathArrayLabel.setVisible(false);
+        centerPanel.add(whereIsNowDeliveryLabel);
+        whereIsNowDeliveryLabel.setVisible(false);
         centerPanel.add(errorLabel);
         errorLabel.setVisible(false);
         frame.add(centerPanel , BorderLayout.CENTER);
@@ -2834,6 +2841,9 @@ public class HelloApplication {
         }
         else {
             showtimeLabel.setVisible(true);
+            showPathLabel.setVisible(true);
+            showPathArrayLabel.setVisible(true);
+            whereIsNowDeliveryLabel.setVisible(true);
             frame.setVisible(true);
         }
         frame.setLocationRelativeTo(null);
@@ -4233,16 +4243,8 @@ public class HelloApplication {
         new File("src\\\\main\\\\java\\\\files\\\\vendors.json");
         new File("src\\\\main\\\\java\\\\files\\\\customers.json");
         new File("src\\\\main\\\\java\\\\files\\\\restaurants.json");
-//        new File("oop\\\\files\\\\ratingForRestaurant.json");
-//        new File("oop\\\\files\\\\commentForRestaurant.json");
-//        new File("oop\\\\files\\\\restaurantFoods.json");
-//        new File("oop\\\\files\\\\restaurantFoodTypes.json");
         new File("src\\\\main\\\\java\\\\files\\\\foods.json");
-//        new File("oop\\\\files\\\\ratingForFood.json");
-//        new File("oop\\\\files\\\\commentForFood.json");
         new File("src\\\\main\\\\java\\\\files\\\\orders.json");
-//        new File("oop\\\\files\\\\orderFoods.json");
-//        new File("oop\\\\files\\\\chosenFoods.json");
         new File("src\\\\main\\\\java\\\\files\\\\carts.json");
         new File("src\\\\main\\\\java\\\\files\\\\foodComment.json");
         new File("src\\\\main\\\\java\\\\files\\\\restaurantComments.json");
