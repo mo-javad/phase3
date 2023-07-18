@@ -13,7 +13,7 @@ public abstract class User {
     private static ArrayList<User> allUsers = new ArrayList<>();
     private static ArrayList<User> allU = new ArrayList<>();
     private static int id = 0;
-
+    private int charge ;
     private final int userId;
     private String username;
     private String password;
@@ -24,6 +24,7 @@ public abstract class User {
         this.username = username;
         this.password = password;
         this.animalName = animalName;
+        this.charge = 0;
         addUser(this);
     }
 
@@ -32,6 +33,13 @@ public abstract class User {
             allUsers = new ArrayList<>(loadUserFromFile());
         allUsers.add(user);
         saveUserToFile();
+    }
+    public int getCharge() {
+        return this.charge;
+    }
+
+    public void setCharge(double charge) {
+        this.charge += charge;
     }
 
     public String getAnimalName() {

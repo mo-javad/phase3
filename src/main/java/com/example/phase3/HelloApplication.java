@@ -2849,9 +2849,11 @@ public class HelloApplication {
     public static void showEstimatedDeliveryTimeUI(){
         MainMenu mainMenu = MainMenu.getInstance();
         LocalDateTime deliveryTime = mainMenu.handleShowEstimatedDeliveryTime();
+        LocalDateTime orderedTime = mainMenu.getStartTime();
         JLabel errorLabel = new JLabel("");
         String deliveryError = "you have no order";
         JLabel showtimeLabel = new JLabel("The estimated time : " +deliveryTime );
+        JLabel showOrderedTimeLabel = new JLabel("The ordered time : " +orderedTime );
         JLabel showPathLabel = new JLabel("The Delivery path : " );
         JLabel showPathArrayLabel = new JLabel(mainMenu.handleShowPathDelivery());
         JLabel whereIsNowDeliveryLabel = new JLabel("now delivery is in " + mainMenu.handleShowWhereISDelivery() + "st node" );
@@ -2863,7 +2865,9 @@ public class HelloApplication {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        JPanel centerPanel = new JPanel(new GridLayout(5 , 1));
+        JPanel centerPanel = new JPanel(new GridLayout(7 , 1));
+        centerPanel.add(showOrderedTimeLabel);
+        showOrderedTimeLabel.setVisible(false);
         centerPanel.add(showtimeLabel);
         showtimeLabel.setVisible(false);
         centerPanel.add(showPathLabel);
@@ -2892,6 +2896,7 @@ public class HelloApplication {
             frame.setVisible(true);
         }
         else {
+            showOrderedTimeLabel.setVisible(true);
             showtimeLabel.setVisible(true);
             showPathLabel.setVisible(true);
             showPathArrayLabel.setVisible(true);

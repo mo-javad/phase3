@@ -3,19 +3,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class Customer extends User {
-    private int charge ;
+
     public Customer(String username, String password, String animalName) {
         super(username, password, animalName);
-        this.charge = 0;
     }
 
-    public int getCharge() {
-        return this.charge;
-    }
 
-    public void setCharge(double charge) {
-        this.charge += charge;
-    }
 
     @Override
     public String toString() {

@@ -622,6 +622,10 @@ public class MainMenu extends Menu{
         this.chooseFoodForCustomer();
     }
 
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
     private void chooseFoodForCustomer(){
         String choice = this.getChoice();
 
@@ -850,21 +854,25 @@ public class MainMenu extends Menu{
             return Message.INVALID_CHOICE;
         else {
             Customer loggedInUser = (Customer) Menu.getLoggedInUser();
+
+            int destination = node;
+            currentDelivery = new Delivery(currentRestaurant.getLocationNode(), destination);
+
             if(currentOrder.getFinalPrice()>=loggedInUser.getCharge()) {
+                isDelivery = false;
+                period = 0;
+                startTime = null;
+                currentDelivery = null;
+                currentOrder = null ;
                 return Message.INVALID_ROLE;
             }
-            else {
-                int destination = node;
-                currentDelivery = new Delivery(currentRestaurant.getLocationNode(), destination);
+            isDelivery = true;
+            period = (int) (currentDelivery.shortestDistinction() * 10);
+            this.timer(period);
+            currentOrder = new Order(currentCart,period,LocalDateTime.now(),destination);
+            currentCart = null;
 
-                isDelivery = true;
-                period = (int) (currentDelivery.shortestDistinction() * 10);
-                this.timer(period);
-                currentOrder = new Order(currentCart,period,LocalDateTime.now(),destination);
-                currentCart = null;
-
-                return Message.SUCCESS;
-            }
+            return Message.SUCCESS;
         }
     }
     public LocalDateTime handleShowEstimatedDeliveryTime(){
@@ -892,12 +900,12 @@ public class MainMenu extends Menu{
         }
     }
     public int handleShowWhereISDelivery(){
-        if(!haveDelivery() && isDelivery){
+        if(!this.haveDelivery()) {
             isDelivery = false;
             period = 0;
             startTime = null;
-        }
-        if(!this.haveDelivery()) {
+            currentDelivery = null;
+            currentOrder = null ;
             return 0;
         }else {
             return currentDelivery.whereIsNowDelivery(startTime , LocalDateTime.now() , period);
