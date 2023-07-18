@@ -198,7 +198,8 @@ public class MainMenu extends Menu{
     }
 
     private void showRestaurants() {
-        ArrayList<Restaurant> allRestaurants = this.controller.handleShowRestaurants();
+        User loggedInUser = Menu.getLoggedInUser();
+        ArrayList<Restaurant> allRestaurants = Restaurant.getVendorsRestaurant(loggedInUser.getUserId());
         System.out.println("Restaurants list :");
         for (int i=0; i<allRestaurants.size(); i++)
             System.out.println((i+1)+". "+allRestaurants.get(i).getName());
