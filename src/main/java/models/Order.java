@@ -17,6 +17,7 @@ import java.util.Objects;
 
 public class Order {
     //arraylist from current orders
+
     private String restaurantName;
     private static ArrayList<Food> orderedFoods = new ArrayList<>();
     private static ArrayList<Order> allOrders = new ArrayList<>(); //History
