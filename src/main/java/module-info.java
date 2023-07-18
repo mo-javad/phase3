@@ -8,7 +8,7 @@ module com.example.phase3 {
     opens com.example.phase3 to javafx.fxml;
     exports com.example.phase3;
 
-    opens controllers to javafx.fxml;
+    opens controllers to javafx.fxml, com.google.gson;
     opens views to javafx.fxml;
     opens models to com.google.gson;
 }

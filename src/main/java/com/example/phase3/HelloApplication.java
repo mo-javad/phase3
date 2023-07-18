@@ -881,7 +881,8 @@ public class HelloApplication {
                 String name = nameField.getText();
                 int price = Integer.parseInt(priceField.getText());
                 Message message = MainController.getInstance().handleAddFood(name, price, FoodType.getIntFromFoodType(MainMenu.getCurrentFoodType()));
-                showAddRestaurantPage3UI();
+                if(message == Message.SUCCESS)
+                    showAddRestaurantPage3UI();
             }
         });
 
@@ -2691,6 +2692,7 @@ public class HelloApplication {
         JButton chargeAccountButton = new JButton("Charge");
         JButton displayAccountChargeButton = new JButton("Display charge");
         JButton showEstimatedDeliveryTimeButton = new JButton("Delivery time");
+        JButton ourOfferButton = new JButton("Our offer");
 
         JFrame frame = new JFrame("Menu System");
         frame.setSize(500, 300);
@@ -2732,12 +2734,18 @@ public class HelloApplication {
         bottomPanel.add(chargeAccountButton);
         bottomPanel.add(displayAccountChargeButton);
         bottomPanel.add(showEstimatedDeliveryTimeButton);
+        bottomPanel.add(ourOfferButton);
         bottomPanel.add(backButton);
         frame.add(bottomPanel, BorderLayout.SOUTH);
 
         backButton.addActionListener(e -> {
             frame.setVisible(false);
             showLoginRegisterUI();
+        });
+
+        ourOfferButton.addActionListener(e -> {
+            frame.setVisible(false);
+            showOurOfferUI();
         });
 
         searchRestaurantButton.addActionListener(e -> {
@@ -2789,6 +2797,50 @@ public class HelloApplication {
             frame.setVisible(false);
 
             showAccessOrderHistoryUI();
+        });
+
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+    public static void showOurOfferUI(){
+        JButton backButton = new JButton("Back");
+        JLabel titleLabel = new JLabel("The offered foods");
+
+        JFrame frame = new JFrame("Offered System");
+        frame.setSize(500, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel topPanel = new JPanel();
+        topPanel.add(titleLabel);
+        frame.add(topPanel, BorderLayout.NORTH);
+
+
+        ArrayList<String> showFoodsName = MainMenu.handleShowOffer();
+
+        String[] array = showFoodsName.toArray(new String[showFoodsName.size()]);
+
+        JList<String> list = new JList<>(array);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list.addListSelectionListener(event -> {
+
+            String selectedValue = list.getSelectedValue();
+
+            MainMenu.setCurrentFood(MainMenu.getCurrentRestaurant().getFoodWithName(selectedValue));
+
+            frame.setVisible(false);
+            showFoodOptionForCustomerUI();
+        });
+
+        JScrollPane scrollPane = new JScrollPane(list);
+        frame.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel bottomPanel1 = new JPanel();
+        bottomPanel1.add(backButton);
+        frame.add(bottomPanel1, BorderLayout.SOUTH);
+
+        backButton.addActionListener(e -> {
+            frame.setVisible(false);
+            showMenuForCustomerUI();
         });
 
         frame.setLocationRelativeTo(null);
