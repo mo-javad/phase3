@@ -980,7 +980,7 @@ public class HelloApplication {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    public static void showMenuUI(){
+    public static void   showMenuUI(){
         JButton backButton = new JButton("Back");
         JLabel titleLabel = new JLabel("Foods : ");
         JButton addFoodButton = new JButton("Add food");
@@ -993,9 +993,11 @@ public class HelloApplication {
         topPanel.add(titleLabel);
         frame.add(topPanel , BorderLayout.NORTH);
 
-        // show foods:
-        String[] items = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
-        JList<String> list = new JList<>(items);
+        ArrayList<String> foodName = new ArrayList<>();
+        for(int i=0 ; i<MainMenu.getCurrentRestaurant().getFoods().size() ; i++)
+            foodName.add(MainMenu.getCurrentRestaurant().getFoods().get(i).getName());
+        String[] array = foodName.toArray(new String[foodName.size()]);
+        JList<String> list = new JList<>(array);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         list.addListSelectionListener(event -> {
@@ -1004,7 +1006,8 @@ public class HelloApplication {
             String selectedValue = list.getSelectedValue();
 
             frame.setVisible(false);
-            showFoodOptionForVendorUI();
+            showFoodDetailsForVendorUI(selectedIndex-1);
+            showFoodOptionForVendorUI(selectedIndex-1);
         });
 
         JScrollPane scrollPane = new JScrollPane(list);
@@ -1028,7 +1031,67 @@ public class HelloApplication {
             showAddRestaurantPage3UI();
         });
     }
-    public static void showFoodOptionForVendorUI(){
+    public static void showFoodDetailsForVendorUI(int num){
+        String aux;
+        JLabel titleLabel = new JLabel("Food details");
+        JLabel foodNameLabel = new JLabel("Food name : " + MainMenu.getCurrentRestaurant().getFoods().get(num).getName());
+        JLabel IDLabel = new JLabel("ID : " + MainMenu.getCurrentRestaurant().getFoods().get(num).getID());
+        JLabel foodTypeLabel = new JLabel("Food type : " + FoodType.getFoodTypeFromInt(MainMenu.getCurrentRestaurant().getFoods().get(num).getFoodTypeID()));
+        JLabel priceLabel = new JLabel("Price : " + MainMenu.getCurrentRestaurant().getFoods().get(num).getPrice());
+        if (MainMenu.getCurrentRestaurant().getFoods().get(num).isActive())
+            aux = "Yes";
+        else aux = "No";
+        JLabel foodActiveLabel = new JLabel("Active : " + aux);
+        if (MainMenu.getCurrentRestaurant().getFoods().get(num).discountActive())
+            aux = "Yes";
+        else aux = "No";
+        JLabel discountActiveLabel = new JLabel("Discount active : " + aux) ;
+        if (MainMenu.getCurrentRestaurant().getFoods().get(num).discountActive())
+            aux = String.valueOf(MainMenu.getCurrentRestaurant().getFoods().get(num).getDiscount()) + " %";
+        else aux = "No active discount";
+        JLabel discountPercentLabel = new JLabel("Discount percent : " + aux) ;
+        JButton foodOptions = new JButton("Food options");
+        JButton back = new JButton("back");
+        JFrame frame = new JFrame("food Details System");
+        frame.setSize(500, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.setLayout(new BorderLayout());
+        JPanel topPanel = new JPanel();
+        topPanel.add(titleLabel);
+        frame.add(topPanel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(4, 2));
+        centerPanel.add(foodNameLabel);
+        centerPanel.add(IDLabel);
+        centerPanel.add(foodTypeLabel);
+        centerPanel.add(priceLabel);
+        centerPanel.add(foodActiveLabel);
+        centerPanel.add(discountActiveLabel);
+        centerPanel.add(discountPercentLabel);
+        frame.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel(new GridLayout(1 , 2 , 10 ,10));
+        bottomPanel.add(foodOptions);
+        bottomPanel.add(back);
+        frame.add(bottomPanel, BorderLayout.SOUTH);
+
+        back.addActionListener(e -> {
+            frame.setVisible(false);
+            showOpenOrdersForVendor();
+        });
+
+        foodOptions.addActionListener(e ->{
+            frame.setVisible(false);
+            showFoodOptionForVendorUI(num);
+        });
+
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+
+        public static void showFoodOptionForVendorUI(int num){
         JButton backButton = new JButton("Back");
         JLabel titleLabel = new JLabel("Options : ");
         JButton editFoodNameButton = new JButton("Edit food name");
@@ -1063,217 +1126,515 @@ public class HelloApplication {
 
         backButton.addActionListener(e1 -> {
             frame.setVisible(false);
-            showMenuUI();
+            showFoodDetailsForVendorUI(num);
         });
 
         displayRatingsButton.addActionListener(e1 -> {
             frame.setVisible(false);
-            showDisplayFoodRatingForVendorUI();
+            showDisplayFoodRatingForVendorUI(num);
         });
 
         displayCommentsButton.addActionListener(e1 -> {
             frame.setVisible(false);
-            showDisplayFoodCommentsForVendorUI();
+            showDisplayFoodCommentsForVendorUI(num);
         });
 
         discountActivationButton.addActionListener(e1 -> {
             frame.setVisible(false);
-            showDiscountActivationUI();
+            showDiscountActivationUI(num);
         });
 
         foodActivationButton.addActionListener(e1 -> {
             frame.setVisible(false);
-            showFoodActivationUI();
+            showFoodActivationUI(num);
         });
 
         deleteFoodButton.addActionListener(e1 -> {
             frame.setVisible(false);
-            showDeleteFoodForVendorUI();
+            showDeleteFoodForVendorUI(num);
         });
 
         editPriceButton.addActionListener(e1 -> {
             frame.setVisible(false);
-            showEditFoodPriceUI();
+            showEditFoodPriceUI(num);
         });
 
         editFoodNameButton.addActionListener(e1 -> {
             frame.setVisible(false);
-            showEditFoodNameUI();
+            showEditFoodNameUI(num);
         });
 
     }
-    public static void showDisplayFoodRatingForVendorUI(){
+    public static void showDisplayFoodRatingForVendorUI(int num){
+        int finalRate = MainMenu.getCurrentRestaurant().getFoods().get(num).getFinalRate();
+        String rate;
+        if (finalRate == -1)
+            rate = "there is no rate yet";
+        else rate = String.valueOf(finalRate);
+        JLabel showRateLabel = new JLabel("The Food Rate : "+ rate );
+        showRateLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        showRateLabel.setForeground(Color.BLUE);
         JButton backButton = new JButton("Back");
-        JLabel titleLabel = new JLabel("The rating");
 
-        JFrame frame = new JFrame("Food Rating System");
-        frame.setSize(500, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JPanel topPanel = new JPanel();
-        topPanel.add(titleLabel);
-        frame.add(topPanel, BorderLayout.NORTH);
-
-        String[] items = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
-        JList<String> list = new JList<>(items);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.addListSelectionListener(event -> {
-            // Get the selected index and value
-            int selectedIndex = list.getSelectedIndex();
-            String selectedValue = list.getSelectedValue();
-
-
-
-            frame.setVisible(false);
-        });
-
-
-        JScrollPane scrollPane = new JScrollPane(list);
-        frame.add(scrollPane, BorderLayout.CENTER);
-
-        JPanel bottomPanel1 = new JPanel();
-        bottomPanel1.add(backButton);
-        frame.add(bottomPanel1, BorderLayout.SOUTH);
-
-        backButton.addActionListener(e -> {
-            frame.setVisible(false);
-            showFoodOptionForVendorUI();
-        });
-
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-
-    public static void showDisplayFoodCommentsForVendorUI(){
-        JButton backButton = new JButton("Back");
-        JLabel titleLabel = new JLabel("The comments");
-
-        JFrame frame = new JFrame("Food Comment System");
-        frame.setSize(500, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JPanel topPanel = new JPanel();
-        topPanel.add(titleLabel);
-        frame.add(topPanel, BorderLayout.NORTH);
-
-        String[] items = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" , "Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
-        JList<String> list = new JList<>(items);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.addListSelectionListener(event -> {
-            // Get the selected index and value
-            int selectedIndex = list.getSelectedIndex();
-            String selectedValue = list.getSelectedValue();
-
-
-
-            frame.setVisible(false);
-
-        });
-
-
-        JScrollPane scrollPane = new JScrollPane(list);
-        frame.add(scrollPane, BorderLayout.CENTER);
-
-        JPanel bottomPanel1 = new JPanel();
-        bottomPanel1.add(backButton);
-        frame.add(bottomPanel1, BorderLayout.SOUTH);
-
-        backButton.addActionListener(e -> {
-            frame.setVisible(false);
-            showFoodOptionForVendorUI();
-        });
-
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-
-    public static void showDiscountActivationUI(){
-        JLabel titleLabel = new JLabel("Discount");
-        JLabel errorLabel = new JLabel("");
-        String discountError = "Enter discount percent";
-        String timeError = "Enter timestamp";
-        JButton backButton = new JButton("Back");
-        JLabel timeStampLabel = new JLabel("Enter timestamp into minutes : ");
-        JTextField timeStampField = new JTextField(20) ;
-        JButton nextButton = new JButton("Ok");
-        JLabel discountLabel = new JLabel("Enter discount percent : ");
-        JTextField discountField = new JTextField(20) ;
-
-        JFrame frame = new JFrame("Food System");
-        frame.setSize(400, 250);
+        JFrame frame = new JFrame("Food Rate System");
+        frame.setSize(250, 150);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
 
-        JPanel topPanel = new JPanel();
-        topPanel.add(titleLabel);
-        frame.add(topPanel, BorderLayout.NORTH);
+        JPanel centerPanel = new JPanel();
+        centerPanel.add(showRateLabel);
+        frame.add(centerPanel, BorderLayout.CENTER);
 
-        JPanel centerPanel = new JPanel(new GridLayout(10 , 2));
-        centerPanel.add(timeStampLabel);
-        centerPanel.add(timeStampField);
-        centerPanel.add(discountLabel);
-        centerPanel.add(discountField);
-        centerPanel.add(errorLabel);
-        errorLabel.setVisible(false);
-        frame.add(centerPanel , BorderLayout.CENTER);
+        JPanel bottomPanel1 = new JPanel();
+        bottomPanel1.add(backButton);
+        frame.add(bottomPanel1, BorderLayout.SOUTH);
+
+        backButton.addActionListener(e1 -> {
+            frame.setVisible(false);
+            showFoodOptionForVendorUI(num);
+        });
+
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+
+    public static void showDisplayFoodCommentsForVendorUI(int num){
+        JButton backButton = new JButton("Back");
+        JButton responseButton = new JButton("Response");
+
+        JFrame frame = new JFrame("Comment System");
+        frame.setSize(500, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ArrayList<String> comments = new ArrayList<>();
+        for(int i=0 ; i<MainMenu.getCurrentRestaurant().getFoods().get(num).getComments().size() ; i++)
+            comments.add( Customer.getUserByUserID(MainMenu.getCurrentRestaurant().getFoods().get(num).getComments().get(i).getCustomerID()).getUsername() + " : "
+                    + MainMenu.getCurrentRestaurant().getFoods().get(num).getComments().get(i).getComment());
+        String[] array = comments.toArray(new String[comments.size()]);
+        JList<String> list = new JList<>(array);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        list.addListSelectionListener(event -> {
+            // Get the selected index and value
+            int selectedIndex = list.getSelectedIndex();
+            String selectedValue = list.getSelectedValue();
+
+            responseButton.addActionListener(e1 -> {
+                frame.setVisible(false);
+                showResponseToFoodComment(selectedIndex-1,num); // it can also be selectedValue ;
+            });
+
+        });
+
+        JScrollPane scrollPane = new JScrollPane(list);
+        frame.add(scrollPane, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel(new GridLayout(1 , 2));
         bottomPanel.add(backButton);
-        bottomPanel.add(nextButton);
+        bottomPanel.add(responseButton);
         frame.add(bottomPanel, BorderLayout.SOUTH);
-
-        backButton.addActionListener(e -> {
-            frame.setVisible(false);
-            showFoodOptionForVendorUI();
-        });
-
-        nextButton.addActionListener(e -> {
-            if(discountField.getText().equals("")){
-                errorLabel.setText(discountError);
-                errorLabel.setForeground(Color.RED);
-                errorLabel.setVisible(true);
-                frame.setVisible(true);
-            }
-            else if(timeStampField.getText().equals("")){
-                errorLabel.setText(timeError);
-                errorLabel.setForeground(Color.RED);
-                errorLabel.setVisible(true);
-                frame.setVisible(true);
-            }
-            else {
-                JLabel successLabel = new JLabel("Done successfully");
-                JFrame frame1 = new JFrame("Successful");
-                JButton okButton = new JButton("ok");
-
-                frame1.setSize(250, 150);
-                frame1.setResizable(false);
-                frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-                JPanel centerPanel1 = new JPanel();
-                centerPanel1.add(successLabel);
-                frame1.add(centerPanel1, BorderLayout.CENTER);
-
-                JPanel bottomPanel1 = new JPanel();
-                bottomPanel1.add(okButton);
-                frame1.add(bottomPanel1, BorderLayout.SOUTH);
-
-                okButton.addActionListener(e1 -> {
-                    frame1.setVisible(false);
-                    showFoodOptionForVendorUI();
-                });
-                frame.setVisible(false);
-                frame1.setLocationRelativeTo(null);
-                frame1.setVisible(true);
-            }
-        });
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        backButton.addActionListener(e1 -> {
+            frame.setVisible(false);
+            showFoodOptionForVendorUI(num);
+        });
     }
-    public static void showFoodActivationUI(){
+    public static void showResponseToFoodComment(int index, int num){
+        // TODO verify the ID comment and then :
+        if (MainMenu.getCurrentRestaurant().getFoods().get(num).getComments().get(index).isResponseExists()){
+            JLabel errorLabel = new JLabel("");
+            String responseError = "Type your response";
+            JLabel titleLabel = new JLabel("Responding");
+            JLabel successLabel = new JLabel("Done successfully");
+            successLabel.setFont(new Font("Arial", Font.BOLD, 12));
+            successLabel.setForeground(Color.BLUE);
+            JButton backButton = new JButton("Back");
+            JButton okButton = new JButton("Ok");
+            JButton nextButton = new JButton("Next");
+            JLabel responseLabel = new JLabel("Your response :" + MainMenu.getCurrentRestaurant().getFoods().get(num).getComments().get(index).getResponse());
+            JLabel editResponseLabel = new JLabel("type your new response :");
+            JTextField responseField = new JTextField(20);
+
+            JFrame frame = new JFrame("Responding System");
+            frame.setSize(500, 300);
+            frame.setResizable(false);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            frame.setLayout(new BorderLayout());
+            JPanel topPanel = new JPanel();
+            topPanel.add(titleLabel);
+            frame.add(topPanel, BorderLayout.NORTH);
+
+            JPanel centerPanel = new JPanel();
+            centerPanel.setLayout(new GridLayout(4, 2));
+            centerPanel.add(responseLabel);
+            centerPanel.add(editResponseLabel);
+            centerPanel.add(responseField);
+            centerPanel.add(errorLabel);
+            errorLabel.setVisible(false);
+            frame.add(centerPanel, BorderLayout.CENTER);
+
+            JPanel bottomPanel = new JPanel();
+            bottomPanel.setLayout(new GridLayout(1, 2));
+            bottomPanel.add(nextButton);
+            bottomPanel.add(backButton);
+            frame.add(bottomPanel, BorderLayout.SOUTH);
+
+            backButton.addActionListener(e1 -> {
+                frame.setVisible(false);
+                showDisplayCommentsForVendorUI();
+            });
+
+            nextButton.addActionListener(e1 -> {
+                if(responseField.getText().equals("")) {
+                    errorLabel.setText(responseError);
+                    errorLabel.setForeground(Color.RED);
+                    errorLabel.setVisible(true);
+                    frame.setVisible(true);
+                }else {
+                    String response = responseField.getText();
+                    //Todo after saving :
+                    MainMenu.getCurrentRestaurant().getFoods().get(num).getComments().get(index).setResponse(index, response);
+                    JFrame frame1 = new JFrame("Successful");
+                    frame1.setSize(250, 150);
+                    frame1.setResizable(false);
+                    frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+                    JPanel centerPanel1 = new JPanel();
+                    centerPanel1.add(successLabel);
+                    frame1.add(centerPanel1, BorderLayout.CENTER);
+
+                    JPanel bottomPanel1 = new JPanel();
+                    bottomPanel1.add(okButton);
+                    frame1.add(bottomPanel1, BorderLayout.SOUTH);
+
+                    okButton.addActionListener(e -> {
+                        frame1.setVisible(false);
+                        frame.setVisible(false);
+                        showDisplayCommentsForVendorUI();
+                    });
+                    frame.setVisible(false);
+                    frame1.setLocationRelativeTo(null);
+                    frame1.setVisible(true);
+                }
+            });
+
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }else {
+            JLabel errorLabel = new JLabel("");
+            String responseError = "Type your response";
+            JLabel titleLabel = new JLabel("Responding");
+            JLabel successLabel = new JLabel("Done successfully");
+            successLabel.setFont(new Font("Arial", Font.BOLD, 12));
+            successLabel.setForeground(Color.BLUE);
+            JButton backButton = new JButton("Back");
+            JButton okButton = new JButton("Ok");
+            JButton nextButton = new JButton("Next");
+            JLabel responseLabel = new JLabel("Type your response :");
+            JTextField responseField = new JTextField(20);
+
+            JFrame frame = new JFrame("Responding System");
+            frame.setSize(500, 300);
+            frame.setResizable(false);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            frame.setLayout(new BorderLayout());
+            JPanel topPanel = new JPanel();
+            topPanel.add(titleLabel);
+            frame.add(topPanel, BorderLayout.NORTH);
+
+            JPanel centerPanel = new JPanel();
+            centerPanel.setLayout(new GridLayout(4, 2));
+            centerPanel.add(responseLabel);
+            centerPanel.add(responseField);
+            centerPanel.add(errorLabel);
+            errorLabel.setVisible(false);
+            frame.add(centerPanel, BorderLayout.CENTER);
+
+            JPanel bottomPanel = new JPanel();
+            bottomPanel.setLayout(new GridLayout(1, 2));
+            bottomPanel.add(nextButton);
+            bottomPanel.add(backButton);
+            frame.add(bottomPanel, BorderLayout.SOUTH);
+
+            backButton.addActionListener(e1 -> {
+                frame.setVisible(false);
+                showDisplayCommentsForVendorUI();
+            });
+
+            nextButton.addActionListener(e1 -> {
+                if(responseField.getText().equals("")){
+                    errorLabel.setText(responseError);
+                    errorLabel.setForeground(Color.RED);
+                    errorLabel.setVisible(true);
+                    frame.setVisible(true);
+                }else {
+                    //Todo after saving :
+                    MainMenu.getCurrentRestaurant().getFoods().get(num).getComments().get(index).setResponse(index, responseField.getText().trim());
+                    JFrame frame1 = new JFrame("Successful");
+                    frame1.setSize(250, 150);
+                    frame1.setResizable(false);
+                    frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+                    JPanel centerPanel1 = new JPanel();
+                    centerPanel1.add(successLabel);
+                    frame1.add(centerPanel1, BorderLayout.CENTER);
+
+                    JPanel bottomPanel1 = new JPanel();
+                    bottomPanel1.add(okButton);
+                    frame1.add(bottomPanel1, BorderLayout.SOUTH);
+
+                    okButton.addActionListener(e -> {
+                        frame1.setVisible(false);
+                        frame.setVisible(false);
+                        showDisplayCommentsForVendorUI();
+                    });
+                    frame.setVisible(false);
+                    frame1.setLocationRelativeTo(null);
+                    frame1.setVisible(true);
+                }
+            });
+
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }
+    }
+
+    public static void showDiscountActivationUI(int num){
+        if (MainMenu.getCurrentRestaurant().getFoods().get(num).discountActive()){
+            JLabel errorLabel = new JLabel("You have an active discount!");
+            JFrame frame = new JFrame("Error");
+            JButton okButton = new JButton("ok");
+            frame.setSize(250, 150);
+            frame.setResizable(false);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            JPanel centerPanel = new JPanel();
+            centerPanel.add(errorLabel);
+            frame.add(centerPanel, BorderLayout.CENTER);
+
+            JPanel bottomPanel = new JPanel();
+            bottomPanel.add(okButton);
+            frame.add(bottomPanel, BorderLayout.SOUTH);
+
+            okButton.addActionListener(e1 -> {
+                frame.setVisible(false);
+                showFoodOptionForVendorUI(num);
+            });
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }else {
+            JLabel titleLabel = new JLabel("Discount");
+            JLabel errorLabel = new JLabel("");
+            String discountError = "Enter discount percent";
+            String timeError = "Enter timestamp";
+            String discountAmountError = "discount percent must be under 50%";
+            JButton backButton = new JButton("Back");
+            JLabel timeStampLabel = new JLabel("Enter timestamp into minutes : ");
+            JTextField timeStampField = new JTextField(20);
+            JButton nextButton = new JButton("Ok");
+            JLabel discountLabel = new JLabel("Enter discount percent (under 50%): ");
+            JTextField discountField = new JTextField(20);
+
+            JFrame frame = new JFrame("Food System");
+            frame.setSize(400, 250);
+            frame.setResizable(false);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            JPanel topPanel = new JPanel();
+            topPanel.add(titleLabel);
+            frame.add(topPanel, BorderLayout.NORTH);
+
+            JPanel centerPanel = new JPanel(new GridLayout(10, 2));
+            centerPanel.add(timeStampLabel);
+            centerPanel.add(timeStampField);
+            centerPanel.add(discountLabel);
+            centerPanel.add(discountField);
+            centerPanel.add(errorLabel);
+            errorLabel.setVisible(false);
+            frame.add(centerPanel, BorderLayout.CENTER);
+
+            JPanel bottomPanel = new JPanel(new GridLayout(1, 2));
+            bottomPanel.add(backButton);
+            bottomPanel.add(nextButton);
+            frame.add(bottomPanel, BorderLayout.SOUTH);
+
+            backButton.addActionListener(e -> {
+                frame.setVisible(false);
+                showFoodOptionForVendorUI(num);
+            });
+
+            nextButton.addActionListener(e -> {
+                if (discountField.getText().equals("")) {
+                    errorLabel.setText(discountError);
+                    errorLabel.setForeground(Color.RED);
+                    errorLabel.setVisible(true);
+                    frame.setVisible(true);
+                } else if (Integer.parseInt(discountField.getText().trim()) > 50){
+                    errorLabel.setText(discountAmountError);
+                    errorLabel.setForeground(Color.RED);
+                    errorLabel.setVisible(true);
+                    frame.setVisible(true);
+                }else if (timeStampField.getText().equals("")) {
+                    errorLabel.setText(timeError);
+                    errorLabel.setForeground(Color.RED);
+                    errorLabel.setVisible(true);
+                    frame.setVisible(true);
+                } else {
+                    int discount = Integer.parseInt(discountField.getText().trim());
+                    int timestamp = Integer.parseInt(timeStampField.getText().trim());
+                    MainMenu.getCurrentRestaurant().getFoods().get(num).setDiscount(discount);
+                    MainMenu.getCurrentRestaurant().getFoods().get(num).discounter(timestamp);
+                    JLabel successLabel = new JLabel("Done successfully");
+                    JFrame frame1 = new JFrame("Successful");
+                    JButton okButton = new JButton("ok");
+
+                    frame1.setSize(250, 150);
+                    frame1.setResizable(false);
+                    frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+                    JPanel centerPanel1 = new JPanel();
+                    centerPanel1.add(successLabel);
+                    frame1.add(centerPanel1, BorderLayout.CENTER);
+
+                    JPanel bottomPanel1 = new JPanel();
+                    bottomPanel1.add(okButton);
+                    frame1.add(bottomPanel1, BorderLayout.SOUTH);
+
+                    okButton.addActionListener(e1 -> {
+                        frame1.setVisible(false);
+                        showFoodOptionForVendorUI(num);
+                    });
+                    frame.setVisible(false);
+                    frame1.setLocationRelativeTo(null);
+                    frame1.setVisible(true);
+                }
+            });
+
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }
+    }
+    public static void showFoodActivationUI(int num){
         // the phase 1 needed for verify that is active or no ;
+        if (MainMenu.getCurrentRestaurant().getFoods().get(num).isActive()){
+            JButton noButton = new JButton("No");
+            JButton yesButton = new JButton("Yes");
+            JLabel titleLabel = new JLabel("Are you sure you want to disActive food?");
+
+            JFrame frame = new JFrame("Food Activation System");
+            frame.setSize(250, 150);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setResizable(false);
+
+            JPanel topPanel = new JPanel();
+            topPanel.add(titleLabel);
+            frame.add(topPanel, BorderLayout.NORTH);
+
+            JPanel bottomPanel = new JPanel(new GridLayout(1 , 2 , 10 ,10));
+            bottomPanel.add(noButton);
+            bottomPanel.add(yesButton);
+            frame.add(bottomPanel , BorderLayout.SOUTH);
+
+            noButton.addActionListener(e -> {
+                frame.setVisible(false);
+                showFoodOptionForVendorUI(num);
+            });
+
+            yesButton.addActionListener(e -> {
+                frame.setVisible(false);
+                showDisActivatedFoodForVendorUI(num);
+            });
+
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }else {
+            JButton noButton = new JButton("No");
+            JButton yesButton = new JButton("Yes");
+            JLabel titleLabel = new JLabel("Are you sure you want to Active food?");
+
+            JFrame frame = new JFrame("Food Activation System");
+            frame.setSize(250, 150);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setResizable(false);
+
+            JPanel topPanel = new JPanel();
+            topPanel.add(titleLabel);
+            frame.add(topPanel, BorderLayout.NORTH);
+
+            JPanel bottomPanel = new JPanel(new GridLayout(1 , 2 , 10 ,10));
+            bottomPanel.add(noButton);
+            bottomPanel.add(yesButton);
+            frame.add(bottomPanel , BorderLayout.SOUTH);
+
+            noButton.addActionListener(e -> {
+                frame.setVisible(false);
+                showFoodOptionForVendorUI(num);
+            });
+
+            yesButton.addActionListener(e -> {
+                frame.setVisible(false);
+                showActivatedFoodForVendorUI(num);
+            });
+
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }
     }
-    public static void showDeleteFoodForVendorUI(){
+    public static void showActivatedFoodForVendorUI(int num){
+        MainMenu.getCurrentRestaurant().getFoods().get(num).setActive(true);
+        JLabel successLabel = new JLabel("Activated successfully");
+        JFrame frame = new JFrame("Successful");
+        JButton okButton = new JButton("ok");
+        frame.setSize(250, 150);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.add(successLabel);
+        frame.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.add(okButton);
+        frame.add(bottomPanel, BorderLayout.SOUTH);
+
+        okButton.addActionListener(e1 -> {
+            frame.setVisible(false);
+            showFoodOptionForVendorUI(num);
+        });
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+    public static void showDisActivatedFoodForVendorUI(int num){
+        MainMenu.getCurrentRestaurant().getFoods().get(num).setActive(false);
+        JLabel successLabel = new JLabel("DisActivated successfully");
+        JFrame frame = new JFrame("Successful");
+        JButton okButton = new JButton("ok");
+        frame.setSize(250, 150);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.add(successLabel);
+        frame.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.add(okButton);
+        frame.add(bottomPanel, BorderLayout.SOUTH);
+
+        okButton.addActionListener(e1 -> {
+            frame.setVisible(false);
+            showFoodOptionForVendorUI(num);
+        });
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+    public static void showDeleteFoodForVendorUI(int num){
+        MainMenu.getCurrentRestaurant().getFoods().remove(num);
         JLabel successLabel = new JLabel("Deleted successfully");
         JFrame frame = new JFrame("Successful");
         JButton okButton = new JButton("ok");
@@ -1291,13 +1652,13 @@ public class HelloApplication {
 
         okButton.addActionListener(e1 -> {
             frame.setVisible(false);
-            showFoodOptionForVendorUI();
+            showFoodOptionForVendorUI(num);
         });
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    public static void showEditFoodPriceUI(){
+    public static void showEditFoodPriceUI(int num){
         JButton backButton = new JButton("Back");
         JLabel titleLabel = new JLabel("Edit food price");
         JLabel errorLabel = new JLabel("");
@@ -1330,7 +1691,7 @@ public class HelloApplication {
 
         backButton.addActionListener(e -> {
             frame.setVisible(false);
-            showFoodsForCustomerUI();
+            showFoodOptionForVendorUI(num);
         });
 
         editButton.addActionListener(e -> {
@@ -1341,7 +1702,7 @@ public class HelloApplication {
                 frame.setVisible(true);
             }
             else {
-
+                MainMenu.getCurrentRestaurant().getFoods().get(num).setPrice(Integer.parseInt(editPriceField.getText().trim()));
                 JLabel successLabel = new JLabel("Edited successfully");
                 JFrame frame1 = new JFrame("Successful");
                 JButton okButton = new JButton("ok");
@@ -1359,7 +1720,7 @@ public class HelloApplication {
 
                 okButton.addActionListener(e1 -> {
                     frame1.setVisible(false);
-                    showFoodOptionForVendorUI();
+                    showFoodOptionForVendorUI(num);
                 });
                 frame.setVisible(false);
                 frame1.setLocationRelativeTo(null);
@@ -1371,7 +1732,7 @@ public class HelloApplication {
         frame.setVisible(true);
     }
 
-    public static void showEditFoodNameUI(){
+    public static void showEditFoodNameUI(int num){
         JButton backButton = new JButton("Back");
         JLabel titleLabel = new JLabel("Edit food name");
         JLabel errorLabel = new JLabel("");
@@ -1404,7 +1765,7 @@ public class HelloApplication {
 
         backButton.addActionListener(e -> {
             frame.setVisible(false);
-            showFoodsForCustomerUI();
+            showFoodOptionForVendorUI(num);
         });
 
         editButton.addActionListener(e -> {
@@ -1415,7 +1776,7 @@ public class HelloApplication {
                 frame.setVisible(true);
             }
             else {
-
+                MainMenu.getCurrentRestaurant().getFoods().get(num).setName(editNameField.getText());
                 JLabel successLabel = new JLabel("Edited successfully");
                 JFrame frame1 = new JFrame("Successful");
                 JButton okButton = new JButton("ok");
@@ -1433,7 +1794,7 @@ public class HelloApplication {
 
                 okButton.addActionListener(e1 -> {
                     frame1.setVisible(false);
-                    showFoodOptionForVendorUI();
+                    showFoodOptionForVendorUI(num);
                 });
                 frame.setVisible(false);
                 frame1.setLocationRelativeTo(null);
@@ -1636,7 +1997,7 @@ public class HelloApplication {
         JLabel statusLabel = new JLabel("Enter the new status :");
         JTextField statusField = new JTextField(20) ;
 
-        JFrame frame = new JFrame("Edit Location System");
+        JFrame frame = new JFrame("Change Status System");
         frame.setSize(500, 300);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -1885,7 +2246,7 @@ public class HelloApplication {
 
             responseButton.addActionListener(e1 -> {
                 frame.setVisible(false);
-                showResponseToComment(selectedIndex); // it can also be selectedValue ;
+                showResponseToComment(selectedIndex-1); // it can also be selectedValue ;
             });
 
         });
@@ -1908,74 +2269,165 @@ public class HelloApplication {
 
     }
     public static void showResponseToComment(int index){
-        int selectedIndex = index;
         // TODO verify the ID comment and then :
-        JLabel titleLabel = new JLabel("Responding");
-        JLabel successLabel = new JLabel("Done successfully");
-        successLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        successLabel.setForeground(Color.BLUE);
-        JButton backButton = new JButton("Back");
-        JButton okButton = new JButton("Ok");
-        JButton nextButton = new JButton("Next");
-        JLabel responseLabel = new JLabel("Type your response :");
-        JTextField responseField = new JTextField(20) ;
+        if (MainMenu.getCurrentRestaurant().getAllComments().get(index).isResponseExists()){
+            JLabel errorLabel = new JLabel("");
+            String responseError = "Type your response";
+            JLabel titleLabel = new JLabel("Responding");
+            JLabel successLabel = new JLabel("Done successfully");
+            successLabel.setFont(new Font("Arial", Font.BOLD, 12));
+            successLabel.setForeground(Color.BLUE);
+            JButton backButton = new JButton("Back");
+            JButton okButton = new JButton("Ok");
+            JButton nextButton = new JButton("Next");
+            JLabel responseLabel = new JLabel("Your response :" + MainMenu.getCurrentRestaurant().getAllComments().get(index).getResponse());
+            JLabel editResponseLabel = new JLabel("type your new response :");
+            JTextField responseField = new JTextField(20);
 
-        JFrame frame = new JFrame("Responding System");
-        frame.setSize(500, 300);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            JFrame frame = new JFrame("Responding System");
+            frame.setSize(500, 300);
+            frame.setResizable(false);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        frame.setLayout(new BorderLayout());
-        JPanel topPanel = new JPanel();
-        topPanel.add(titleLabel);
-        frame.add(topPanel, BorderLayout.NORTH);
+            frame.setLayout(new BorderLayout());
+            JPanel topPanel = new JPanel();
+            topPanel.add(titleLabel);
+            frame.add(topPanel, BorderLayout.NORTH);
 
-        JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new GridLayout(4, 2));
-        centerPanel.add(responseLabel);
-        centerPanel.add(responseField);
-        frame.add(centerPanel, BorderLayout.CENTER);
+            JPanel centerPanel = new JPanel();
+            centerPanel.setLayout(new GridLayout(4, 2));
+            centerPanel.add(responseLabel);
+            centerPanel.add(editResponseLabel);
+            centerPanel.add(responseField);
+            centerPanel.add(errorLabel);
+            errorLabel.setVisible(false);
+            frame.add(centerPanel, BorderLayout.CENTER);
 
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new GridLayout(1 , 2));
-        bottomPanel.add(nextButton);
-        bottomPanel.add(backButton);
-        frame.add(bottomPanel , BorderLayout.SOUTH);
+            JPanel bottomPanel = new JPanel();
+            bottomPanel.setLayout(new GridLayout(1, 2));
+            bottomPanel.add(nextButton);
+            bottomPanel.add(backButton);
+            frame.add(bottomPanel, BorderLayout.SOUTH);
 
-        backButton.addActionListener(e1 -> {
-            frame.setVisible(false);
-            showDisplayCommentsForVendorUI();
-        });
-
-        nextButton.addActionListener(e1 -> {
-            String response = responseField.getText();
-            //Todo after saving :
-
-            JFrame frame1 = new JFrame("Successful");
-            frame1.setSize(250, 150);
-            frame1.setResizable(false);
-            frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-            JPanel centerPanel1 = new JPanel();
-            centerPanel1.add(successLabel);
-            frame1.add(centerPanel1 , BorderLayout.CENTER);
-
-            JPanel bottomPanel1 = new JPanel();
-            bottomPanel1.add(okButton);
-            frame1.add(bottomPanel1, BorderLayout.SOUTH);
-
-            okButton.addActionListener(e -> {
-                frame1.setVisible(false);
+            backButton.addActionListener(e1 -> {
                 frame.setVisible(false);
                 showDisplayCommentsForVendorUI();
             });
-            frame.setVisible(false);
-            frame1.setLocationRelativeTo(null);
-            frame1.setVisible(true);
-        });
 
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+            nextButton.addActionListener(e1 -> {
+                if(responseField.getText().equals("")) {
+                    errorLabel.setText(responseError);
+                    errorLabel.setForeground(Color.RED);
+                    errorLabel.setVisible(true);
+                    frame.setVisible(true);
+                }else {
+                    String response = responseField.getText();
+                    //Todo after saving :
+                    MainMenu.getCurrentRestaurant().getAllComments().get(index).setResponse(index, response);
+                    JFrame frame1 = new JFrame("Successful");
+                    frame1.setSize(250, 150);
+                    frame1.setResizable(false);
+                    frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+                    JPanel centerPanel1 = new JPanel();
+                    centerPanel1.add(successLabel);
+                    frame1.add(centerPanel1, BorderLayout.CENTER);
+
+                    JPanel bottomPanel1 = new JPanel();
+                    bottomPanel1.add(okButton);
+                    frame1.add(bottomPanel1, BorderLayout.SOUTH);
+
+                    okButton.addActionListener(e -> {
+                        frame1.setVisible(false);
+                        frame.setVisible(false);
+                        showDisplayCommentsForVendorUI();
+                    });
+                    frame.setVisible(false);
+                    frame1.setLocationRelativeTo(null);
+                    frame1.setVisible(true);
+                }
+            });
+
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }else {
+            JLabel errorLabel = new JLabel("");
+            String responseError = "Type your response";
+            JLabel titleLabel = new JLabel("Responding");
+            JLabel successLabel = new JLabel("Done successfully");
+            successLabel.setFont(new Font("Arial", Font.BOLD, 12));
+            successLabel.setForeground(Color.BLUE);
+            JButton backButton = new JButton("Back");
+            JButton okButton = new JButton("Ok");
+            JButton nextButton = new JButton("Next");
+            JLabel responseLabel = new JLabel("Type your response :");
+            JTextField responseField = new JTextField(20);
+
+            JFrame frame = new JFrame("Responding System");
+            frame.setSize(500, 300);
+            frame.setResizable(false);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            frame.setLayout(new BorderLayout());
+            JPanel topPanel = new JPanel();
+            topPanel.add(titleLabel);
+            frame.add(topPanel, BorderLayout.NORTH);
+
+            JPanel centerPanel = new JPanel();
+            centerPanel.setLayout(new GridLayout(4, 2));
+            centerPanel.add(responseLabel);
+            centerPanel.add(responseField);
+            centerPanel.add(errorLabel);
+            errorLabel.setVisible(false);
+            frame.add(centerPanel, BorderLayout.CENTER);
+
+            JPanel bottomPanel = new JPanel();
+            bottomPanel.setLayout(new GridLayout(1, 2));
+            bottomPanel.add(nextButton);
+            bottomPanel.add(backButton);
+            frame.add(bottomPanel, BorderLayout.SOUTH);
+
+            backButton.addActionListener(e1 -> {
+                frame.setVisible(false);
+                showDisplayCommentsForVendorUI();
+            });
+
+            nextButton.addActionListener(e1 -> {
+                if(responseField.getText().equals("")){
+                    errorLabel.setText(responseError);
+                    errorLabel.setForeground(Color.RED);
+                    errorLabel.setVisible(true);
+                    frame.setVisible(true);
+                }else {
+                    //Todo after saving :
+                    MainMenu.getCurrentRestaurant().getAllComments().get(index).setResponse(index, responseField.getText().trim());
+                    JFrame frame1 = new JFrame("Successful");
+                    frame1.setSize(250, 150);
+                    frame1.setResizable(false);
+                    frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+                    JPanel centerPanel1 = new JPanel();
+                    centerPanel1.add(successLabel);
+                    frame1.add(centerPanel1, BorderLayout.CENTER);
+
+                    JPanel bottomPanel1 = new JPanel();
+                    bottomPanel1.add(okButton);
+                    frame1.add(bottomPanel1, BorderLayout.SOUTH);
+
+                    okButton.addActionListener(e -> {
+                        frame1.setVisible(false);
+                        frame.setVisible(false);
+                        showDisplayCommentsForVendorUI();
+                    });
+                    frame.setVisible(false);
+                    frame1.setLocationRelativeTo(null);
+                    frame1.setVisible(true);
+                }
+            });
+
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }
     }
     public static void showDisplayRatingsForVendorUI(){
         int finalRate = MainMenu.getCurrentRestaurant().getFinalRate();
@@ -2030,8 +2482,8 @@ public class HelloApplication {
             int selectedIndex = list.getSelectedIndex();
             String selectedValue = list.getSelectedValue();
             for (int i = 0; i < MainMenu.getCurrentRestaurant().getFoods().size(); i++) {
-                if (MainMenu.getCurrentRestaurant().getFoods().get(i).getFoodTypeID() == MainMenu.getCurrentRestaurant().getFoodTypes().get(selectedIndex-1));
-                MainMenu.getCurrentRestaurant().getFoods().remove(i);
+                if (MainMenu.getCurrentRestaurant().getFoods().get(i).getFoodTypeID() == MainMenu.getCurrentRestaurant().getFoodTypes().get(selectedIndex-1))
+                    MainMenu.getCurrentRestaurant().getFoods().remove(i);
             }
             MainMenu.getCurrentRestaurant().getFoodTypes().remove(selectedIndex -1);
             // TODO now with given Index we find the selected restaurant and show this window :
