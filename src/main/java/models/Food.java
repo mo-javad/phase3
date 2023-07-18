@@ -164,7 +164,7 @@ public class Food {
         if (loadFoodFromFile() != null)
             allFoods = new ArrayList<>(loadFoodFromFile());
         finalRate = 0;
-        if (getRatings() == null)
+        if (getRatings().size() == 0)
             return -1;
         else {
             for (RatingForFood rating : getRatings()) finalRate += rating.getRate();

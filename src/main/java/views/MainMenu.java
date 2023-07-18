@@ -680,7 +680,7 @@ public class MainMenu extends Menu{
     }
     public static boolean handleEditCommentsOfFoodForCustomer(String comment , int ID){
         User loggedInUser = Menu.getLoggedInUser();
-        if(currentFood.getComments().get(ID).getCustomerID() == loggedInUser.getUserId()) {
+        if(currentFood.getComments().get(ID-1).getCustomerID() == loggedInUser.getUserId()) {
             currentFood.editComment(loggedInUser.getUserId(), comment);
             return true;
         }
