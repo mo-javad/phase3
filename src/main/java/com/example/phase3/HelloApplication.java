@@ -1005,8 +1005,7 @@ public class HelloApplication {
             String selectedValue = list.getSelectedValue();
 
             frame.setVisible(false);
-            showFoodDetailsForVendorUI(selectedIndex-1);
-            showFoodOptionForVendorUI(selectedIndex-1);
+            showFoodDetailsForVendorUI(selectedIndex);
         });
 
         JScrollPane scrollPane = new JScrollPane(list);
@@ -1220,7 +1219,7 @@ public class HelloApplication {
 
             responseButton.addActionListener(e1 -> {
                 frame.setVisible(false);
-                showResponseToFoodComment(selectedIndex-1,num); // it can also be selectedValue ;
+                showResponseToFoodComment(selectedIndex,num); // it can also be selectedValue ;
             });
 
         });
@@ -1825,7 +1824,7 @@ public class HelloApplication {
             // Get the selected index and value
             int selectedIndex = list.getSelectedIndex();
             String selectedValue = list.getSelectedValue();
-            openOrderDetailsUI(selectedIndex-1);
+            openOrderDetailsUI(selectedIndex);
         });
 
 
@@ -2120,7 +2119,7 @@ public class HelloApplication {
             // Get the selected index and value
             int selectedIndex = list.getSelectedIndex();
             String selectedValue = list.getSelectedValue();
-            orderHistoryDetailsUI(selectedIndex-1);
+            orderHistoryDetailsUI(selectedIndex);
         });
 
         JScrollPane scrollPane = new JScrollPane(list);
@@ -2245,7 +2244,7 @@ public class HelloApplication {
 
             responseButton.addActionListener(e1 -> {
                 frame.setVisible(false);
-                showResponseToComment(selectedIndex-1); // it can also be selectedValue ;
+                showResponseToComment(selectedIndex); // it can also be selectedValue ;
             });
 
         });
@@ -2481,10 +2480,10 @@ public class HelloApplication {
             int selectedIndex = list.getSelectedIndex();
             String selectedValue = list.getSelectedValue();
             for (int i = 0; i < MainMenu.getCurrentRestaurant().getFoods().size(); i++) {
-                if (MainMenu.getCurrentRestaurant().getFoods().get(i).getFoodTypeID() == MainMenu.getCurrentRestaurant().getFoodTypes().get(selectedIndex-1))
+                if (MainMenu.getCurrentRestaurant().getFoods().get(i).getFoodTypeID() == MainMenu.getCurrentRestaurant().getFoodTypes().get(selectedIndex))
                     MainMenu.getCurrentRestaurant().getFoods().remove(i);
             }
-            MainMenu.getCurrentRestaurant().getFoodTypes().remove(selectedIndex -1);
+            MainMenu.getCurrentRestaurant().getFoodTypes().remove(selectedIndex );
             // TODO now with given Index we find the selected restaurant and show this window :
             frame.setVisible(false);
             showEditFoodType2UI();
