@@ -115,7 +115,16 @@ public class Food {
             return price * (100 - getDiscount()) / 100;
         return price;
     }
-
+    public static void removeFood(int ID, int resID) {
+        if (loadFoodFromFile() != null)
+            allFoods = new ArrayList<>(loadFoodFromFile());
+        for (int i = 0; i <allFoods.size() ; i++) {
+            if (allFoods.get(i).getID_restaurant()==resID)
+                if (allFoods.get(i).getFoodTypeID() == ID)
+                    allFoods.remove(i);
+        }
+        saveFoodToFile();
+    }
     public void setPrice(int price) {
         this.price = price;
         saveFoodToFile();

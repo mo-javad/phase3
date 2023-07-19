@@ -2479,14 +2479,14 @@ public class HelloApplication {
             // Get the selected index and value
             int selectedIndex = list.getSelectedIndex();
             String selectedValue = list.getSelectedValue();
-            for (int i = 0; i < MainMenu.getCurrentRestaurant().getFoods().size(); i++) {
-                if (MainMenu.getCurrentRestaurant().getFoods().get(i).getFoodTypeID() == MainMenu.getCurrentRestaurant().getFoodTypes().get(selectedIndex))
-                    MainMenu.getCurrentRestaurant().getFoods().remove(i);
-            }
-            MainMenu.getCurrentRestaurant().getFoodTypes().remove(selectedIndex );
+//            for (int i = 0; i < MainMenu.getCurrentRestaurant().getFoods().size(); i++) {
+//                if (MainMenu.getCurrentRestaurant().getFoods().get(i).getFoodTypeID() == MainMenu.getCurrentRestaurant().getFoodTypes().get(selectedIndex))
+//                    MainMenu.getCurrentRestaurant().getFoods().remove(i);
+//            }
+//            MainMenu.getCurrentRestaurant().getFoodTypes().remove(selectedIndex );
             // TODO now with given Index we find the selected restaurant and show this window :
             frame.setVisible(false);
-            showEditFoodType2UI();
+            showEditFoodType2UI(selectedIndex);
         });
 
         JScrollPane scrollPane = new JScrollPane(list);
@@ -2504,7 +2504,7 @@ public class HelloApplication {
             showRestaurantOptions();
         });
     }
-    public static void showEditFoodType2UI(){
+    public static void showEditFoodType2UI(int num){
         JButton noButton = new JButton("No");
         JButton yesButton = new JButton("Yes");
         JLabel titleLabel = new JLabel("ARE YOU SURE YOU WANT TO CHANGE YOUR RESTAURANT TYPE??");
@@ -2529,6 +2529,7 @@ public class HelloApplication {
         });
 
         yesButton.addActionListener(e -> {
+            MainMenu.getCurrentRestaurant().removeFoodType(num);
             frame.setVisible(false);
             showAddRestaurantPage3UI();
         });

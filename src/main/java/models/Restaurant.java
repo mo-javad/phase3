@@ -96,10 +96,16 @@ public class Restaurant {
     }
 
     public void setFoodType(int ID) {
-        foodTypes.add(ID);
+        if (!foodTypes.contains(ID))
+            foodTypes.add(ID);
         saveRestaurantToFile();
     }
-
+    public void removeFoodType(int ID) {
+        foodTypes.remove(ID);
+        Food.removeFood(ID,getRestaurantID());
+        foods = getFoods();
+        saveRestaurantToFile();
+    }
     public void editFoodType(int ID, FoodType foodType) {
         foodTypes.set(ID, FoodType.getIntFromFoodType(foodType));
         saveRestaurantToFile();
@@ -111,7 +117,8 @@ public class Restaurant {
 //        if (foods.size() == 0)
 //            foods = new ArrayList<>();
 //        foods.addAll(Food.getAllRestaurantFoods(getRestaurantID()));
-        return Food.getAllRestaurantFoods(getRestaurantID());
+        foods = Food.getAllRestaurantFoods(getRestaurantID());
+        return foods;
     }
 
     public ArrayList<RatingForRestaurant> getAllRatings() {
