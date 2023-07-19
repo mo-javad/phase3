@@ -129,7 +129,7 @@ public class Food {
         for (int i = 0; i <allFoods.size() ; i++) {
             if (allFoods.get(i).getID_restaurant()==resID)
                 if (allFoods.get(i).getFoodTypeID() == ID)
-                    allFoods.remove(i);
+                    allFoods.remove(allFoods.get(i));
         }
         saveFoodToFile();
     }
@@ -243,7 +243,12 @@ public class Food {
         this.ID = ++IDCounter;
         addFood(this);
     }
-
+    public static void removeFood(Food food) {
+        if (loadFoodFromFile() != null)
+            allFoods = new ArrayList<>(loadFoodFromFile());
+        allFoods.remove(food);
+        saveFoodToFile();
+    }
     private void addFood(Food food) {
         if (loadFoodFromFile() != null)
             allFoods = new ArrayList<>(loadFoodFromFile());
