@@ -1632,7 +1632,7 @@ public class HelloApplication {
         frame.setVisible(true);
     }
     public static void showDeleteFoodForVendorUI(int num){
-        MainMenu.getCurrentRestaurant().getFoods().remove(num);
+        MainMenu.getCurrentRestaurant().removeFood(num);
         JLabel successLabel = new JLabel("Deleted successfully");
         JFrame frame = new JFrame("Successful");
         JButton okButton = new JButton("ok");

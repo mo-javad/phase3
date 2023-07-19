@@ -110,7 +110,11 @@ public class Restaurant {
         foodTypes.set(ID, FoodType.getIntFromFoodType(foodType));
         saveRestaurantToFile();
     }
-
+    public void removeFood(int ID) {
+        Food.removeFood(getFoods().get(ID));
+        foods = getFoods();
+        saveRestaurantToFile();
+    }
     public ArrayList<Food> getFoods() {
         if (loadRestaurantFromFile() != null)
             allRestaurant = new ArrayList<>(loadRestaurantFromFile());
