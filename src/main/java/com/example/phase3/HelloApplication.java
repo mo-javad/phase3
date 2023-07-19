@@ -1650,7 +1650,7 @@ public class HelloApplication {
 
         okButton.addActionListener(e1 -> {
             frame.setVisible(false);
-            showFoodOptionForVendorUI(num);
+            showMenuForVendorUI();
         });
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
